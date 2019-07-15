@@ -18,8 +18,11 @@ app.use(cors({
 }))
 app.use(helmet())
 
+const data = require('../data.js')
+
 app.get('/', (req, res) => {
-  res.send('Hello, world!')
+  // res.send('Hello, world!')
+  res.json(data)
 })
 
 app.use(function errorHandler(error, req, res, next) {
