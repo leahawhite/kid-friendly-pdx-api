@@ -1,4 +1,4 @@
-const data = { 
+module.export = { 
   places: [
     {
       id: 1,
@@ -624,5 +624,3 @@ const data = {
   },
   ]
 };
-
-export default data;
