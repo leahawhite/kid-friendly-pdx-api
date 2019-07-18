@@ -25,4 +25,15 @@ placesRouter
     res.json(place)
   })
 
+placesRouter
+.route('/places/:placeId/reviews')
+.get((req, res) => {
+  const { placeId } = req.params
+  const place = places.find(place => place.id == placeId)
+  if (!place) {
+    return res.status(404).send('Place not found')
+  }
+  res.json(place)
+})
+
 module.exports = placesRouter
