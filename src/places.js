@@ -12,7 +12,7 @@ module.exports = [
       neighborhood: "SE",
       phone: "503-232-3004",
       website: "http://atlaspizzapdx.com",
-      hours: [
+      place_hours: [
         {
           "dayOfWeek": "Monday",
           "opens": "12:00 pm",
@@ -50,9 +50,9 @@ module.exports = [
         },
       ],
       date_added: "2019-06-13",
-      category: ["restaurant",],
-      descriptors: [ "pizza", "arcade", "beer" ],
-      features: { 
+      place_category: ["restaurant",],
+      place_descriptors: [ "pizza", "arcade", "beer" ],
+      place_features: { 
         "toys": true, 
         "play area": true, 
         "arcade": true,
@@ -66,7 +66,7 @@ module.exports = [
         "flexible": true,
         "patio/sidewalk": true,
       },
-      images: [
+      place_images: [
         {
           id: 1,
           src: 'https://lh3.googleusercontent.com/ir83SjI1lJpHK4E5vQFwD7LfyE__eKaIvBtmFf1nV5wyfq-z5LVe4u7PuQvQ7ycqsFlGMe5vw3UNRB86G3SjLckIZKHgFSkz0-oQdLAAP2UxlUwq-HqDA116RjcI3iG-lA1ftsYr9S4=w2400',
@@ -80,8 +80,6 @@ module.exports = [
           place_id: 1,
         },
       ],
-      number_of_reviews: 2,
-      average_review_rating: 4.5,
     },
     {
       id: 2,
@@ -91,12 +89,12 @@ module.exports = [
       city: "Portland",
       state: "OR",
       zipcode: "97206",
-      lat: 45.479040,
-      lng: -122.616120,
+      latitude: 45.479040,
+      longitude: -122.616120,
       neighborhood: "SE",
       phone: "503-953-1250",
       website: "https://www.grandcentralbakery.com/find-us/portland/woodstock/",
-      hours: [
+      place_hours: [
         {
           "dayOfWeek": "Monday",
           "opens": "7:00 am",
@@ -134,9 +132,9 @@ module.exports = [
         },
       ],
       date_added: "2019-06-13",
-      category: ["restaurant",],
-      descriptors: [ "cafe", "bakery", "pastries", ],
-      features: { 
+      place_category: ["restaurant",],
+      place_descriptors: [ "cafe", "bakery", "pastries", ],
+      place_features: { 
         "toys": false, 
         "play area": false, 
         "arcade": false,
@@ -164,8 +162,6 @@ module.exports = [
           place_id: 2,
         },
       ],
-      number_of_reviews: 1,
-      average_review_rating: 4,
     },
     {
       id: 3,
@@ -175,12 +171,12 @@ module.exports = [
       city: "Portland",
       state: "OR",
       zipcode: "97206",
-      lat: 45.497010,
-      lng: -122.635210,
+      latitude: 45.497010,
+      longitude: -122.635210,
       neighborhood: "SE",
       phone: "503-232-4677",
       website: "https://hopworksbeer.com/eat/powell/",
-      hours: [
+      place_hours: [
         {
           "dayOfWeek": "Monday",
           "opens": "11:00 am",
@@ -218,9 +214,9 @@ module.exports = [
         },
       ],
       date_added: "2019-06-13",
-      category: ["restaurant",],
-      descriptors: [ "pizza", "burgers", "beer",],
-      features: { 
+      place_category: ["restaurant",],
+      place_descriptors: [ "pizza", "burgers", "beer",],
+      place_features: { 
         "toys": true, 
         "play area": true, 
         "arcade": false,
@@ -248,8 +244,6 @@ module.exports = [
           place_id: 3,
         },
       ],
-      number_of_reviews: 1,
-      average_review_rating: "4.4",
     },
     {
       id: 4,
@@ -259,12 +253,12 @@ module.exports = [
       city: "Portland",
       state: "OR",
       zipcode: "97206",
-      lat: 45.497560,
-      lng: -122.611350,
+      latitude: 45.497560,
+      longitude: -122.611350,
       neighborhood: "SE",
       phone: "503-894-9150",
       website: "https://www.hammerandjacks.com/",
-      hours: [
+      place_hours: [
         {
           "dayOfWeek": "Monday",
           "opens": "10:00 am",
@@ -302,9 +296,9 @@ module.exports = [
         },
       ],
       date_added: "2019-07-06",
-      category: [ "toy store", "indoor play" ],
-      descriptors: [ "toy store", "indoor play", "community space" ],
-      features: { 
+      place_category: [ "toy store", "indoor play" ],
+      place_descriptors: [ "toy store", "indoor play", "community space" ],
+      place_features: { 
         "toys": true, 
         "play area": true, 
         "arcade": false,
@@ -338,8 +332,6 @@ module.exports = [
           place_id: 4,
         },
       ],
-      number_of_reviews: 1,
-      average_review_rating: 5,
     },
     {
       id: 5,
@@ -349,12 +341,12 @@ module.exports = [
       city: "Portland",
       state: "OR",
       zipcode: "97202",
-      lat: 45.480400,
-      lng: -122.635399,
+      latitude: 45.480400,
+      longitude: -122.635399,
       neighborhood: "SE",
       phone: "503-771-8386",
       website: "https://www.portlandoregon.gov/parks/finder/index.cfm?action=ViewPark&PropertyID=27",
-      hours: [
+      place_hours: [
         {
           "dayOfWeek": "Monday",
           "opens": "06:00 am",
@@ -392,9 +384,9 @@ module.exports = [
         },
       ],
       date_added: "2019-07-10",
-      category: [ "park", "attraction" ],
-      descriptors: [ "garden", "park", "wildlife" ],
-      features: { 
+      place_category: [ "park", "attraction" ],
+      place_descriptors: [ "garden", "park", "wildlife" ],
+      place_features: { 
         "toys": false, 
         "play area": false, 
         "arcade": false,
@@ -431,7 +423,5 @@ module.exports = [
           place_id: 5,
         },
       ],
-      number_of_reviews: 1,
-      average_review_rating: 5,
     },
   ]

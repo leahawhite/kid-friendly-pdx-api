@@ -1,10 +1,9 @@
-require('dotenv').config()
 const app = require('./app')
 const knex = require('knex')
 const PlacesService = require('./services/places-service')
 const { PORT, DB_URL } = require('./config')
 
-const knexInstance = knex({
+const db = knex({
   client: 'pg',
   connection: DB_URL
 })
