@@ -1,18 +1,27 @@
 const express = require('express')
-const places = require('../places');
+const places = require('../places.js');
+const reviews = require('../reviews.js');
+const users = require('../users.js');
 
 const placesRouter = express.Router()
 
 placesRouter
   .route('/places')
   .get((req, res) => {
-    const { searchTerm = '', category='all', neighborhood='All Portland', sort='' } = req.query
-    const results = places.filter(place => (place.name.toLowerCase().includes(searchTerm.toLowerCase())
-        || place.descriptors.includes(searchTerm.toLowerCase()) || place.category.includes(searchTerm.toLowerCase())) 
-        && (place.category.includes(category) || category === 'all') 
-        && (neighborhood === place.neighborhood || neighborhood === 'All Portland'))
+    const { searchTerm = '', category='', neighborhood='' } = req.query
+    let results = places
+    if (searchTerm) {
+      results = places.filter(place => (place.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      || place.place_descriptors.includes(searchTerm.toLowerCase()) || place.place_category.includes(searchTerm.toLowerCase()))
+    } 
+    if (category) {
+      results = places.filter(place => place.category.includes(category))
+    } 
+    if (neighborhood) {
+      results = places.filter(place => place.neighborhood.includes(neighborhood))
+    } 
     res.json(results)
-    })
+  })
 
 placesRouter
   .route('/places/:placeId')
@@ -33,7 +42,8 @@ placesRouter
   if (!place) {
     return res.status(404).send('Place not found')
   }
-  res.json(place)
+  const placeReviews = [ reviews.find(review => review.place_id == placeId) ]
+  res.json(placeReviews)
 })
 
 module.exports = placesRouter

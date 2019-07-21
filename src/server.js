@@ -3,9 +3,9 @@ const knex = require('knex')
 const PlacesService = require('./services/places-service')
 const { PORT, DB_URL } = require('./config')
 
-const db = knex({
+const knexInstance = knex({
   client: 'pg',
-  connection: DB_URL
+  connection: "postgresql://postgres:quesadilla@localhost/kid_friendly_pdx_test"
 })
 
 console.log(PlacesService.getAllPlaces())

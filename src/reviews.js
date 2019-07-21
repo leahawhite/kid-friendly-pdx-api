@@ -6,7 +6,7 @@ module.exports = [
     date_created: "2019-06-13",
     place_id: 1,
     author: 1,
-    review_images: [
+    images: [
       {
         id: 1,
         src: 'https://lh3.googleusercontent.com/QDwk6G6ZCwYzVH-yJHQ824GZ1wKW2XXus8hxxdH-4AAHz-FejC-UVydyE5le1ZvPTIo1cXw1G25qhljwS8dgyIedCCFtIxBonznVQ4LfaPDEZVWmqKS1vFqVUFFNmMmMlKQ5eCpfhNI=w2400',
@@ -28,7 +28,7 @@ module.exports = [
     date_created: "2019-06-13",
     place_id: 1,
     author: 2,
-    review_images: [],
+    images: [],
   },
   { 
     id: 3,
@@ -37,7 +37,7 @@ module.exports = [
     date_created: "2019-06-13",
     place_id: 2,
     author: 1,
-    review_images: [ 
+    images: [ 
       {
         id: 3,
         src: 'https://lh3.googleusercontent.com/EsXFx4tHCGD6rT29rS7BLHwkqIDlr5Zp83oY6NGaQT36lbLdjmToppVmFXCntWRnEknaeEkPkMtiGgBihgGkDZBzcvPhVQUwwhHPdrXQGYKP4mIpktYDDg70WPewBPrj6rKrUYkw3YA=w2400',
@@ -53,7 +53,7 @@ module.exports = [
     date_created: "2019-07-06",
     place_id: 3,
     author: 1,
-    review_images: [
+    images: [
       {
         id: 4,
         src: 'https://lh3.googleusercontent.com/4jdEc5VGXsWFLqqeulTdHEnFXMISxcNJMikB-iUZvuU-_N9OaNFPwmsJi2xxptyIuN6GOFW5obNOyzEdbZ8GR0GPZOg14WSeqgJYtazOz1JYGLry6qdtW4ksCSwNNN_N-uPw0Zpy8xg=w2400',
@@ -75,7 +75,7 @@ module.exports = [
     date_created: "2019-07-08",
     place_id: 4,
     author: 1,
-    review_images: [],
+    images: [],
   },
   { 
     id: 6,
@@ -83,8 +83,8 @@ module.exports = [
     text: "The rhodie garden is a park we can visit at any time of the year. It's of course most beautiful in the spring with all of the flowers blooming, but it's also fun to watch the ducks and splash in puddles on cold, rainy days. You can buy duck/geese food at the gate for $1/bag, though the birds are active enough without any encouragement. The paths are always well groomed and easy to walk on, even on the wettest days. With the water features, flowers, bridges, and wildlife, there's plenty to see and do here.",
     date_created: "2019-07-10",
     place_id: 5,
-    author: 5,
-    review_images: [
+    author: 1,
+    images: [
       {
         id: 6,
         src: 'https://lh3.googleusercontent.com/_QvxNBcamd3hHO7STXX_GOzoOlLnzl8FEwwWc2SQN4pjmVp4sBa-T1w86MWYTqXa8bcsO81itLMmDHtG_yZXS_Q06PTszZm3l4tISvj291hsuqHimqiJULOH1ZX9BdYaHGV6u76fMQI=w2400',
