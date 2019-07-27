@@ -8,18 +8,15 @@ const placesRouter = express.Router()
 placesRouter
   .route('/places')
   .get((req, res) => {
-    const { searchTerm = '', category='', neighborhood='' } = req.query
+    const { searchTerm='', category='', neighborhood='' } = req.query
     let results = places
-    if (searchTerm) {
+    if (searchTerm) 
       results = places.filter(place => (place.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      || place.place_descriptors.includes(searchTerm.toLowerCase()) || place.place_category.includes(searchTerm.toLowerCase()))
-    } 
-    if (category) {
-      results = places.filter(place => place.category.includes(category))
-    } 
-    if (neighborhood) {
-      results = places.filter(place => place.neighborhood.includes(neighborhood))
-    } 
+      || (place.descriptors.includes(searchTerm.toLowerCase())) || (place.category.includes(searchTerm.toLowerCase())))
+    if (category) 
+      results = results.filter(place => place.category.includes(category))
+    if (neighborhood)
+      results = results.filter(place => place.neighborhood.includes(neighborhood))
     res.json(results)
   })
 
@@ -35,15 +32,15 @@ placesRouter
   })
 
 placesRouter
-.route('/places/:placeId/reviews')
-.get((req, res) => {
-  const { placeId } = req.params
-  const place = places.find(place => place.id == placeId)
-  if (!place) {
-    return res.status(404).send('Place not found')
-  }
-  const placeReviews = [ reviews.find(review => review.place_id == placeId) ]
-  res.json(placeReviews)
-})
+  .route('/places/:placeId/reviews')
+  .get((req, res) => {
+    const { placeId } = req.params
+    const place = places.find(place => place.id == placeId)
+    if (!place) {
+      return res.status(404).send('Place not found')
+    }
+    const placeReviews = [ reviews.filter(review => review.place_id == placeId) ]
+    res.json(placeReviews)
+  })
 
 module.exports = placesRouter

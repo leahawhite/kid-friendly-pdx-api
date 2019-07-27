@@ -11,7 +11,6 @@ describe('Places service object', function() {
       client: 'pg',
       connection: process.env.TEST_DB_URL,
     })
-    app.set('db', db)
   })
 
   before(() => db('places').truncate())
@@ -28,7 +27,7 @@ describe('Places service object', function() {
           .insert(testPlaces)
       })
 
-      it.only(`getAllPlaces() resolves all places from 'places' table`, () => {
+      it(`getAllPlaces() resolves all places from 'places' table`, () => {
         return PlacesService.getAllPlaces(db)
           .then(actual => {
             expect(actual).to.eql(testPlaces.map(place => ({
@@ -64,22 +63,19 @@ describe('Places service object', function() {
             expect (actual).to.eql({
               id: testId,
               name: testPlace.name,
-              address1: testPlace.address1,
-              address2: testPlace.address2,
+              address: testPlace.address,
               city: testPlace.city,
               state: testPlace.state,
               zipcode: testPlace.zipcode,
               latitude: testPlace.latitude,
               longitude: testPlace.longitude,
               neighborhood: testPlace.neighborhood,
-              hours: testPlace.hours,
               phone: testPlace.phone,
               website: testPlace.website,
               date_added: new Date(testPlace.date_added.toLocaleString('en', { timeZone: 'UTC' })),
               category: testPlace.category,
               descriptors: testPlace.descriptors,
               features: testPlace.features,
-              images: testPlace.images
             })
           })
       })

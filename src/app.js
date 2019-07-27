@@ -7,6 +7,9 @@ const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const errorHandler = require('./error-handler')
 const placesRouter = require('./places/places-router')
+const usersRouter = require('./users/users-router')
+const reviewsRouter = require('./reviews/reviews-router')
+const imagesRouter = require('./images/images-router')
 // const PlacesService = require('./services/places-service')
 
 const app = express()
@@ -20,6 +23,9 @@ app.use(cors())
 app.use(helmet())
 
 app.use(placesRouter)
+app.use(reviewsRouter)
+// app.use(usersRouter)
+app.use(imagesRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, world!')
