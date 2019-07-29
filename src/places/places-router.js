@@ -1,13 +1,11 @@
 const express = require('express')
-const places = require('../places.js');
-const reviews = require('../reviews.js');
-const users = require('../users.js');
+const PlacesService = require('./places-service')
 
 const placesRouter = express.Router()
 
 placesRouter
-  .route('/places')
-  .get((req, res) => {
+  .route('/')
+  /* .get((req, res) => {
     const { searchTerm='', category='', neighborhood='' } = req.query
     let results = places
     if (searchTerm) 
@@ -18,21 +16,67 @@ placesRouter
     if (neighborhood)
       results = results.filter(place => place.neighborhood.includes(neighborhood))
     res.json(results)
+  })*/
+  .get((req, res, next) => {
+    const knexInstance = req.app.get('db')
+    PlacesService.getAllPlaces(knexInstance)
+      .then(places => {
+        res.json(places.map(place => ({
+          id: place.id,
+          name: place.name,
+          address: place.address,
+          city: place.city,
+          state: place.state,
+          zipcode: place.zipcode,
+          latitude: place.latitude,
+          longitude: place.longitude,
+          neighborhood: place.neighborhood,
+          phone: place.phone,
+          website: place.website,
+          date_added: new Date(place.date_added).toLocaleString(),
+          category: place.category,
+          descriptors: place.descriptors,
+          features: place.features
+        })))
+      })
+      .catch(next)
   })
 
 placesRouter
-  .route('/places/:placeId')
-  .get((req, res) => {
-    const { placeId } = req.params
-    const place = places.find(place => place.id == placeId)
-    if (!place) {
-      return res.status(404).send('Place not found')
-    }
-    res.json(place)
+  .route('/:placeId')
+  .get((req, res, next) => {
+    const knexInstance = req.app.get('db')
+    PlacesService.getById(knexInstance, req.params.place_id)
+      .then(place => {
+        if (!place) {
+          return res.status(404).json({
+            error: { message: `Place doesn't exist`}
+          })
+        }
+        res.json({
+          id: place.id,
+          name: place.name,
+          address: place.address,
+          city: place.city,
+          state: place.state,
+          zipcode: place.zipcode,
+          latitude: place.latitude,
+          longitude: place.longitude,
+          neighborhood: place.neighborhood,
+          phone: place.phone,
+          website: place.website,
+          date_added: new Date(place.date_added).toLocaleString(),
+          category: place.category,
+          descriptors: place.descriptors,
+          features: place.features
+        })
+      })
+      .catch(next)
   })
+  
 
 placesRouter
-  .route('/places/:placeId/reviews')
+  .route('/:placeId/reviews')
   .get((req, res) => {
     const { placeId } = req.params
     const place = places.find(place => place.id == placeId)

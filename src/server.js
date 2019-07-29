@@ -1,16 +1,13 @@
 const app = require('./app')
 const knex = require('knex')
-const PlacesService = require('./services/places-service')
 const { PORT, DB_URL } = require('./config')
 
 const db = knex({
   client: 'pg',
-  connection: 'postgresql://postgres:quesadilla@localhost/kid_friendly_pdx'
+  connection: DB_URL
 })
 
-
-
-// console.log(PlacesService.getAllPlaces())
+app.set('db', db)
 
 app.listen(PORT, () => {
   console.log(`Server listening at http://localhost:${PORT}`)

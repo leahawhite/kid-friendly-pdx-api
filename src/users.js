@@ -1,7 +1,7 @@
 module.exports = [
   {
     id: 1,
-    display_name: "",
+    display_name: "Administrator",
     email: "administrator@xxx.com",
     password: "lool00",
     date_created: "2019-07-06",

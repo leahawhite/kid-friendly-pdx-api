@@ -1,32 +1,3 @@
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-
-function makeUsersArray() {
-  return [
-    {
-      id: 1,
-      display_name: "test-user-1",
-      email: "test1@testing.com",
-      password: "password1",
-      date_created: new Date("2019-07-06").toLocaleString('en', { timeZone: 'UTC' }),
-    },
-    {
-      id: 2,
-      display_name: "test-user-2",
-      email: "test2@testing.com",
-      password: "password1",
-      date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
-    },
-    { 
-      id: 3,
-      display_name: "test-user-3",
-      email: "test3@testing.com",
-      password: "password1",
-      date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
-    },
-  ]
-}
-
 function makePlacesArray() {
   return [
     {
@@ -91,7 +62,7 @@ function makePlacesArray() {
           "dayOfWeek": "Sunday",
           "opens": "12:00 pm",
           "closes": "11:00 pm",
-        }
+        },
       ]
     },
     {
@@ -154,7 +125,7 @@ function makePlacesArray() {
           "dayOfWeek": "Sunday",
           "opens": "7:00 am",
           "closes": "6:00 pm",
-        }
+        },
       ]
     },
     {
@@ -219,113 +190,12 @@ function makePlacesArray() {
           "dayOfWeek": "Sunday",
           "opens": "11:00 am",
           "closes": "11:00 pm",
-        }
+        },
       ]
     }
   ]
 }
 
-function makeReviewsArray(users, places) {
-  return [
-    { 
-      id: 1,
-      rating: 5,
-      text: "Test review 1",
-      date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
-      place_id: places[0].id,
-      author: users[0].id,
-    },
-    { 
-      id: 2,
-      rating: 4,
-      text: "Test review 2",
-      date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
-      place_id: places[1].id,
-      author: users[1].id,
-    },
-    { 
-      id: 3,
-      rating: 3,
-      text: "Test review 3",
-      date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
-      place_id: places[1].id,
-      author: users[2].id,
-    },
-  ]
-}
-   
-function makePlacesFixtures() {
-  const testUsers = makeUsersArray()
-  const testPlaces = makePlacesArray()
-  const testReviews = makeReviewsArray(testUsers, testPlaces)
-  return { testUsers, testPlaces, testReviews }
-}
-
-function cleanTables(db) {
-  return db.transaction(trx =>
-    trx.raw(
-    `TRUNCATE
-      places,  
-      users,
-      reviews
-      RESTART IDENTITY CASCADE`
-    )
-    .then(() =>
-      Promise.all([
-        trx.raw(`ALTER SEQUENCE places_id_seq minvalue 0 START WITH 1`),
-        trx.raw(`ALTER SEQUENCE users_id_seq minvalue 0 START WITH 1`),
-        trx.raw(`ALTER SEQUENCE reviews_id_seq minvalue 0 START WITH 1`),
-        trx.raw(`SELECT setval('places_id_seq', 0)`),
-        trx.raw(`SELECT setval('users_id_seq', 0)`),
-        trx.raw(`SELECT setval('reviews_id_seq', 0)`),
-      ])
-    )
-  )
-}
-
-function seedUsers(db, users) {
-  const preppedUsers = users.map(user => ({
-    ...user,
-    password: bcrypt.hashSync(user.password, 1)
-  }))
-  return db.into('users').insert(preppedUsers)
-    .then(() =>
-      // update the auto sequence to stay in sync
-      db.raw(
-        `SELECT setval('users_id_seq', ?)`,
-        [users[users.length - 1].id]
-      )
-    )
-}
-
-function seedPlacesTables(db, users, places, reviews=[]) {
-  // use a transaction to group the queries and auto rollback on any failure
-  return db.transaction(async trx => {
-    await seedUsers(trx. users)
-    await trx.into('places').insert(places)
-    // update the auto sequence to match the forced id values
-    await trx.raw(
-      `SELECT setval('places_id_seq', ?)`,
-      [places[places.length - 1].id]
-    )
-    // only insert reviews if there are some, also update sequence count
-  })
-}
-
-
-function makeAuthHeader(user) {
-  const token = Buffer.from(`${user.email}:${user.password}`).toString('base64')
-  return `Basic ${token}`
-}
-
 module.exports = {
-  makeUsersArray,
   makePlacesArray,
-  makeReviewsArray,
-  
-  makePlacesFixtures,
-  seedUsers,
-  seedPlacesTables,
-  cleanTables,
-  makeAuthHeader
 }

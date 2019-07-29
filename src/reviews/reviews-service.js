@@ -1,6 +1,9 @@
 const ReviewsService = {
-  getById(db, id) {
-    return db
+  getAllComments(knex) {
+    return knex.select('*').from('reviews')
+  },
+  getById(knex, id) {
+    return knex
       .from('reviews')
       .select(
         'reviews.id',
@@ -9,7 +12,7 @@ const ReviewsService = {
         'reviews.date_created',
         'reviews.place_id',
         // 'reviews.images',
-        db/raw(
+        knex.raw(
           `json_strip_nulls(
             row_to_json(
               (SELECT tmp FROM (
@@ -31,7 +34,15 @@ const ReviewsService = {
   },
 
   insertReview(db, newReview) {
-    return db
+    return knex
+      .insert(newReview)
+      .into('reviews')
+      .return ('*')
+      .then(rows => {
+        return rows[0]
+      })
     
   }
 }
+
+module.exports = ReviewsService
