@@ -4,6 +4,7 @@ const images = require('../images.js');
 const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require('multer')
+const ImagesService = require('./images-service')
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -21,14 +22,15 @@ const parser = multer({ storage: storage })
 const imagesRouter = express.Router()
 
 imagesRouter
-  .route('/images')
+  .route('/')
   .get((req, res) => {
     let results = images
     res.json(results)
   })
+  .post()
   
 imagesRouter
-  .route('/images/:imageId')
+  .route('/:imageId')
   .get((req, res) => {
     const { imageId } = req.params
     const image = images.find(image => image.id == imageId)
@@ -38,8 +40,8 @@ imagesRouter
     res.json(image)
   })
 
-imagesRouter
-  .route('/image-upload')
+/*imagesRouter
+  .route('/upload')
   .post(parser.single('myImage'), (req, res) => {
     console.log(req.file)
     const { public_id, secure_url } = req.file
@@ -50,17 +52,17 @@ imagesRouter
     res
     .status(201)
     .json(cloudImage)
+  })*/
+
+imagesRouter
+  .route('/upload')
+  .post(parser.array('myImages'), (req, res) => {
+    const images = req.files
+    res.status(201).json(images.map(image => ({
+       id: image.public_id,
+       src: image.secure_url,
+      })))
   })
 
-  imagesRouter
-  .route('/images-upload')
-  .post(parser.array('myImage'), (req, res) => {
-    console.log(req.files)
-    
-    res
-    .status(201)
-    res.end()
-    
-  })
-
+  
 module.exports = imagesRouter

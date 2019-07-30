@@ -197,7 +197,7 @@ describe('Users Endpoints', () => {
     })
   })
 // not quite working but not sure if I need it -- date and password question
-  describe.only('GET /users/:user_id', () => {
+  describe('GET /users/:user_id', () => {
     context('User does not exist', () => {
       beforeEach('insert users', () =>
         helpers.seedUsers(
