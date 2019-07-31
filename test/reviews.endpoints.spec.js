@@ -2,7 +2,7 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-describe('Reviews Endpoints', function() {
+describe('Reviews Endpoints', () => {
   let db
 
   const {
@@ -25,15 +25,7 @@ describe('Reviews Endpoints', function() {
   afterEach('cleanup', () => helpers.cleanTables(db))
 
   describe(`POST /reviews`, () => {
-    context('Given no reviews', () => {
-      beforeEach(() =>
-        db.into('users').insert(testUsers)
-      )
-
-      it('responds with 404', () => {
-
-      })
-    })
+    
     beforeEach('insert places', () =>
       helpers.seedPlacesTables(
         db,
@@ -41,30 +33,6 @@ describe('Reviews Endpoints', function() {
         testPlaces,
       )
     )
-
-    it(`responds 401 'Unauthorized request' when no creds`, () => {
-      const userNoCreds = { email: "", password: "" }
-      return supertest(app)
-        .post(`/reviews`)
-        .set('Authorization', helpers.makeAuthHeader(userNoCreds))
-        .expect(401, { error: `Unauthorized request` })
-    })
-
-    it(`responds 401 'Unauthorized request' when invalid user`, () => {
-      const userInvalidCreds = { email: 'not', password: 'lool00' }
-      return supertest(app)
-        .post(`/reviews`)
-        .set('Authorization', helpers.makeAuthHeader(userInvalidCreds))
-        .expect(401, { error: `Unauthorized request` })
-    })
-
-    it(`responds 401 'Unauthorized request' when invalid password`, () => {
-      const userInvalidPass = { email: testUsers[0].email, password: 'wrong' }
-      return supertest(app)
-        .post('/reviews')
-        .set('Authorization', helpers.makeAuthHeader(userInvalidPass))
-        .expect(401, { error: `Unauthorized request` })
-    })
 
     it(`creates a review, responding with 201 and the new review`, function() {
       this.retries(3)
@@ -82,6 +50,7 @@ describe('Reviews Endpoints', function() {
         .expect(201)
         .expect(res => {
           expect(res.body).to.have.property('id')
+          expect(res.body.rating).to.eql(newReview.rating)
           expect(res.body.text).to.eql(newReview.text)
           expect(res.body.place_id).to.eql(newReview.place_id)
           expect(res.body.user.id).to.eql(testUser.id)

@@ -2,14 +2,13 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-// need POST reviews and images endpoints
-describe('Protected endpoints', function() {
+describe('Protected endpoints', () => {
   let db
 
   const {
-    testUsers,
     testPlaces,
-    testReviews,
+    testUsers,
+    testReviews
   } = helpers.makePlacesFixtures()
 
   before('make knex instance', () => {
@@ -39,6 +38,16 @@ describe('Protected endpoints', function() {
     {
       name: 'POST /reviews',
       path: '/reviews',
+      method: supertest(app).post,
+    },
+    {
+      name: 'POST /images',
+      path: '/images',
+      method: supertest(app).post,
+    },
+    {
+      name: 'POST /images/upload',
+      path: '/images',
       method: supertest(app).post,
     },
   ]

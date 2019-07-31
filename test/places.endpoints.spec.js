@@ -132,5 +132,30 @@ describe('Places Endpoints', function() {
           .expect(200, expectedReviews)
       })
     })
+    
+    /*context.skip('Given an XSS attack review', () => {
+      const maliciousReview = {
+        id: 911,
+        rating: 5,
+        text: 'This text contains an intentionally broken image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie); alert(''you just got pretend hacked! oh noes!'');">. The image will try to load, when it fails, <strong>it executes malicious JavaScript</strong>',
+        place_id: 1,
+        user_id: 1
+      }
+
+      beforeEach('insert malicious review', () => {
+        return db
+          .into(places)
+          .insert([ maliciousReview ])
+      })
+
+      it('removes XSS attack content', () => {
+        return supertest(app)
+          .get(`/places/${placeId}/reviews/${maliciousReview.id}`)
+          .expect(200)
+          .expect(res => {
+            expect(res.body.text).to.eql(`Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`)
+          })
+        })
+    })*/
   })
 })

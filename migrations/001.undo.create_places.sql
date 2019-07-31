@@ -1,4 +1,2 @@
 DROP TABLE IF EXISTS places;
-DROP TYPE IF EXISTS feature;
-DROP TYPE IF EXISTS category;
-DROP TYPE IF EXISTS neighborhood;
+DROP TABLE IF EXISTS place_hours;

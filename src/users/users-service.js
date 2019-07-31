@@ -43,13 +43,6 @@ const UsersService = {
       email: xss(user.email),
       date_created: new Date(user.date_created),
     }
-  },
-  getById(db, id) {
-    return db
-      .from('users')
-      .select('*')
-      .where('id', id)
-      .first()
   }
 }
 
