@@ -22,11 +22,11 @@ app.use(morgan(morganOption))
 app.use(cors())
 app.use(helmet())
 
-app.use('/places', placesRouter)
-app.use('/reviews', reviewsRouter)
-app.use('/users', usersRouter)
-app.use('/login', authRouter)
-app.use('/images', imagesRouter)
+app.use('/api/places', placesRouter)
+app.use('/api/reviews', reviewsRouter)
+app.use('/api/users', usersRouter)
+app.use('/api/login', authRouter)
+app.use('/api/images', imagesRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello, world!')

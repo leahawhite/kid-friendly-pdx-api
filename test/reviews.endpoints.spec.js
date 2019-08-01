@@ -24,7 +24,7 @@ describe('Reviews Endpoints', () => {
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  describe(`POST /reviews`, () => {
+  describe(`POST /api/reviews`, () => {
     
     beforeEach('insert places', () =>
       helpers.seedPlacesTables(
@@ -44,7 +44,7 @@ describe('Reviews Endpoints', () => {
         place_id: testPlace.id,
       }
       return supertest(app)
-        .post('/reviews')
+        .post('/api/reviews')
         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .send(newReview)
         .expect(201)
@@ -54,7 +54,7 @@ describe('Reviews Endpoints', () => {
           expect(res.body.text).to.eql(newReview.text)
           expect(res.body.place_id).to.eql(newReview.place_id)
           expect(res.body.user.id).to.eql(testUser.id)
-          expect(res.headers.location).to.eql(`/reviews/${res.body.id}`)
+          expect(res.headers.location).to.eql(`/api/reviews/${res.body.id}`)
           const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
           const actualDate = new Date(res.body.date_created).toLocaleString()
           expect(actualDate).to.eql(expectedDate)
@@ -92,7 +92,7 @@ describe('Reviews Endpoints', () => {
         delete newReview[field]
 
         return supertest(app)
-          .post('/reviews')
+          .post('/api/reviews')
           .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
           .send(newReview)
           .expect(400, {

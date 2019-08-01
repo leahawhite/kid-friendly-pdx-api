@@ -33,6 +33,7 @@ imagesRouter
       })
       .catch(next)
   })
+  // works but trying combo
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const { id, src, title, place_id } = req.body
     const newImage = { id, src, title, place_id }
@@ -80,7 +81,7 @@ imagesRouter
 
 imagesRouter
   .route('/upload')
-  .post(parser.array('myImages'), (req, res) => {
+  .post(parser.array('file'), (req, res, err) => {
     const images = req.files
     console.log(images)
     res.status(201).json(images.map(image => ({
@@ -88,6 +89,43 @@ imagesRouter
        src: image.secure_url,
       })))
   })
+  /*.post(requireAuth, parser.array('myImages'), (req, res, next) => {
+    const images = req.files
+    console.log(images)
+    console.log('req.body', req.body)
+    images.map(image => ({
+      id: image.public_id,
+      src: image.secure_url,
+    }))
+    req.body.place_id = image.place_id
+    req.body.title = image.title
+  })
+    // cloudImages are req.files from upload; on client side, user confirms images and they become req.body
+
+    // id and src will come from cloudImages, title and place_id from client form
+    /*const { id, src, title, place_id } = req.body
+    const newImage = { id, src, title, place_id }
+  
+    for (const [key, value] of Object.entries(newImage))
+      if (value == null)
+        return res.status(400).json({
+          error: `Missing '${key}' in request body`
+        })
+    // user_id comes from auth 
+    newImage.user_id = req.user.id 
+    ImagesService.insertImage(
+      req.app.get('db'),
+      newImage
+    )
+      .then(image => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${image.id}`))
+          .json(ImagesService.serializeImage(image))
+      })
+      .catch(next)
+    })*/
+
 
 async function checkImageExists(req, res, next) {
   try {

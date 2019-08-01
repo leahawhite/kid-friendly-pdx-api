@@ -36,18 +36,18 @@ describe('Protected endpoints', () => {
 
   const protectedEndpoints = [
     {
-      name: 'POST /reviews',
-      path: '/reviews',
+      name: 'POST /api/reviews',
+      path: '/api/reviews',
       method: supertest(app).post,
     },
     {
-      name: 'POST /images',
-      path: '/images',
+      name: 'POST /api/images',
+      path: '/api/images',
       method: supertest(app).post,
     },
     {
-      name: 'POST /images/upload',
-      path: '/images',
+      name: 'POST /api/images/upload',
+      path: '/api/images',
       method: supertest(app).post,
     },
   ]

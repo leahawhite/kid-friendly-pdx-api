@@ -26,11 +26,11 @@ describe.only('Images Endpoints', function() {
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  describe(`GET /images`, () => {
+  describe(`GET /api/images`, () => {
     context('Given no images', () => {
       it('responds with 200 and an empty list', () => {
         return supertest(app)
-          .get('/images')
+          .get('/api/images')
           .expect(200, [])
       })
     })
@@ -48,7 +48,7 @@ describe.only('Images Endpoints', function() {
         
       it('responds with 200 and all of the images', () => {
         return supertest(app)
-        .get('/images')
+        .get('/api/images')
         .expect(200, testImages)
       })
     })
@@ -76,7 +76,7 @@ describe.only('Images Endpoints', function() {
         "place_id": testPlace.id,
       }
       return supertest(app)
-        .post('/images')
+        .post('/api/images')
         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
         .send(newImage)
         .expect(201)
@@ -87,7 +87,7 @@ describe.only('Images Endpoints', function() {
           expect(res.body.title).to.eql(newImage.title)
           expect(res.body.place_id).to.eql(newImage.place_id)
           expect(res.body.user_id).to.eql(testUser.id)
-          expect(res.headers.location).to.eql(`/images/${res.body.id}`)
+          expect(res.headers.location).to.eql(`/api/images/${res.body.id}`)
           const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
           const actualDate = new Date(res.body.date_added).toLocaleString()
           // expect(actualDate).to.eql(expectedDate)
@@ -128,7 +128,7 @@ describe.only('Images Endpoints', function() {
         delete newImage[field]
 
         return supertest(app)
-          .post('/images')
+          .post('/api/images')
           .set('Authorization', helpers.makeAuthHeader(testUser))
           .send(newImage)
           .expect(400, {

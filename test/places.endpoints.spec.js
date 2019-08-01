@@ -25,11 +25,11 @@ describe('Places Endpoints', function() {
 
   after('disconnect from db', () => db.destroy())
 
-  describe('GET /places', () => {
+  describe('GET /api/places', () => {
     context('Given no places', () => {
       it('responds with 200 and an empty list', () => {
         return supertest(app)
-          .get('/places')
+          .get('/api/places')
           .expect(200, [])
       })
     })
@@ -53,13 +53,13 @@ describe('Places Endpoints', function() {
             testReviews
           ))
           return supertest(app)
-            .get('/places')
+            .get('/api/places')
             .expect(200, expectedPlaces)
       })
     })
   })
   
-  describe('GET /places/:place_id', () => {
+  describe('GET /api/places/:place_id', () => {
     context('Given no places', () => {
       beforeEach(() =>
         helpers.seedUsers(db, testUsers)
@@ -68,7 +68,7 @@ describe('Places Endpoints', function() {
       it('responds with 404', () => {
         const placeId = 123456
         return supertest(app)
-          .get(`/places/${placeId}`)
+          .get(`/api/places/${placeId}`)
           .expect(404, { error: { message: `Place doesn't exist`}})
       })
     })
@@ -91,13 +91,13 @@ describe('Places Endpoints', function() {
           testReviews
         )
         return supertest(app)
-          .get(`/places/${placeId}`)
+          .get(`/api/places/${placeId}`)
           .expect(200, expectedPlace)
       })
     })
   })
 
-  describe(`GET /places/:place_id/reviews`, () => {
+  describe(`GET /api/places/:place_id/reviews`, () => {
     context(`Given no reviews`, () => {
       beforeEach(() =>
         helpers.seedUsers(db, testUsers)
@@ -106,7 +106,7 @@ describe('Places Endpoints', function() {
       it(`responds with 404`, () => {
         const placeId = 123456
         return supertest(app)
-          .get(`/places/${placeId}/reviews`)
+          .get(`/api/places/${placeId}/reviews`)
           .expect(404, { error: `Review not found` })
       })
     })
@@ -128,7 +128,7 @@ describe('Places Endpoints', function() {
         )
 
         return supertest(app)
-          .get(`/places/${placeId}/reviews`)
+          .get(`/api/places/${placeId}/reviews`)
           .expect(200, expectedReviews)
       })
     })
@@ -150,7 +150,7 @@ describe('Places Endpoints', function() {
 
       it('removes XSS attack content', () => {
         return supertest(app)
-          .get(`/places/${placeId}/reviews/${maliciousReview.id}`)
+          .get(`/api/places/${placeId}/reviews/${maliciousReview.id}`)
           .expect(200)
           .expect(res => {
             expect(res.body.text).to.eql(`Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`)
