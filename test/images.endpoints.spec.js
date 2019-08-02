@@ -2,7 +2,7 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-describe.only('Images Endpoints', function() {
+describe('Images Endpoints', function() {
   let db
 
   const {
@@ -54,7 +54,8 @@ describe.only('Images Endpoints', function() {
     })
   })
 
-  describe('POST images', () => {
+  // test for both post endpoints, then validation 
+  describe('POST /images', () => {
     beforeEach('insert tables', () =>
         helpers.seedPlacesTables(
           db,
@@ -65,20 +66,28 @@ describe.only('Images Endpoints', function() {
         )
       )
     
-    it(`creates an image, responding with 201 and the new image`, () => {
+    it(`creates image(s) from an array of 1-3 images, responding with 201 and the new image(s)`, () => {
       this.retries(3)
       const testPlace = testPlaces[0]
       const testUser = testUsers[0]
-      const newImage = {
-        "id": 12345,
-        "src": "http test",
-        "title": "test title",
-        "place_id": testPlace.id,
-      }
+      const newImages = [
+        {
+          "id": "12345",
+          "src": "http test 1",
+          "title": "test title 1",
+          "place_id": testPlace.id,
+        },
+        {
+          "id": "123456",
+          "src": "http test 2",
+          "title": "test title 2",
+          "place_id": testPlace.id,
+        }
+      ]
       return supertest(app)
         .post('/api/images')
         .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-        .send(newImage)
+        .send(newImages)
         .expect(201)
         .expect(res => {
           expect(res.body.id).to.eql(newImage.id)

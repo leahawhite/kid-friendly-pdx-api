@@ -35,49 +35,41 @@ imagesRouter
   })
   // works but trying combo
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const { id, src, title, place_id } = req.body
-    const newImage = { id, src, title, place_id }
+    const images = req.body
+    const userId = req.user.id
+    console.log('req.body', req.body)
+    images.forEach(image => {
+      const { id, src, place_id } = image
+      const newImage = { id, src, place_id }
   
-    for (const [key, value] of Object.entries(newImage))
-      if (value == null)
-        return res.status(400).json({
-          error: `Missing '${key}' in request body`
-        })
-  
-    newImage.user_id = req.user.id
+      for (const [key, value] of Object.entries(newImage))
+        if (value == null)
+          return res.status(400).json({
+            error: `Missing '${key}' in request body`
+          })
+    
+      newImage.user_id = userId
+      // newImage.title = req.body.title
 
-    ImagesService.insertImage(
-      req.app.get('db'),
-      newImage
-    )
-      .then(image => {
-        res
-          .status(201)
-          .location(path.posix.join(req.originalUrl, `/${image.id}`))
-          .json(ImagesService.serializeImage(image))
-      })
-      .catch(next)
+      ImagesService.insertImage(
+        req.app.get('db'),
+        newImage
+      )
+        .then(image => {
+          res
+            .status(201)
+            .location(path.posix.join(req.originalUrl, `/${image.id}`))
+            .json(ImagesService.serializeImage(image))
+        })
+        .catch(next)
     })
+  })
   
 imagesRouter
   .route('/:imageId')
   .get(checkImageExists, (req, res, next) => {
     res.json(ImagesService.serializeImage(res.image))
   })
-
-/*imagesRouter
-  .route('/upload')
-  .post(parser.single('myImage'), (req, res) => {
-    console.log(req.file)
-    const { public_id, secure_url } = req.file
-    const cloudImage = {
-      id: public_id,
-      src: secure_url
-    }
-    res
-    .status(201)
-    .json(cloudImage)
-  })*/
 
 imagesRouter
   .route('/upload')

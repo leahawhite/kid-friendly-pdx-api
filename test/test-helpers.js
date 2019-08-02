@@ -304,7 +304,7 @@ function makeReviewsArray(users, places) {
       text: "Test review 1",
       date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
       place_id: places[0].id,
-      author: users[0].id,
+      user_id: users[0].id,
     },
     { 
       id: 2,
@@ -312,7 +312,7 @@ function makeReviewsArray(users, places) {
       text: "Test review 2",
       date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
       place_id: places[1].id,
-      author: users[1].id,
+      user_id: users[1].id,
     },
     { 
       id: 3,
@@ -320,7 +320,7 @@ function makeReviewsArray(users, places) {
       text: "Test review 3",
       date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
       place_id: places[1].id,
-      author: users[2].id,
+      user_id: users[2].id,
     },
   ]
 }

@@ -17,7 +17,7 @@ const PlacesService = {
         'places.date_added',
         'places.category',
         'places.descriptors',
-        'places.features',
+        'places.features'
         /* db.raw(
           `SELECT array_to_json(array_agg(row_to_json(h)))
             FROM (

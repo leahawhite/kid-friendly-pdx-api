@@ -2,12 +2,13 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-describe('Places Endpoints', function() {
+describe('Places Endpoints', () => {
   let db
 
   const {
     testUsers,
     testPlaces,
+    testImages,
     testReviews,
   } = helpers.makePlacesFixtures()
 
@@ -34,14 +35,15 @@ describe('Places Endpoints', function() {
       })
     })
 
-    context(`Given 'places' has data`, () => {
+    context.only(`Given 'places' has data`, () => {
       const testPlaces = helpers.makePlacesArray()
       beforeEach('insert places', () => {
         helpers.seedPlacesTables(
           db,
           testUsers,
           testPlaces,
-          testComments
+          testImages,
+          testReviews
         )
       })
 
@@ -50,6 +52,7 @@ describe('Places Endpoints', function() {
           helpers.makeExpectedPlace(
             testUsers,
             place,
+            testImages,
             testReviews
           ))
           return supertest(app)

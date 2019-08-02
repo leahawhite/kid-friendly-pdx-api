@@ -74,7 +74,6 @@ placesRouter
       .catch(next)
   })
   
-
 placesRouter
   .route('/:placeId/reviews')
   .get((req, res) => {
