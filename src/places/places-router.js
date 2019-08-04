@@ -19,27 +19,34 @@ placesRouter
   })*/
   .get((req, res, next) => {
     const knexInstance = req.app.get('db')
-    PlacesService.getAllPlaces(knexInstance)
-      .then(places => {
-        res.json(places.map(place => ({
-          id: place.id,
-          name: place.name,
-          address: place.address,
-          city: place.city,
-          state: place.state,
-          zipcode: place.zipcode,
-          latitude: place.latitude,
-          longitude: place.longitude,
-          neighborhood: place.neighborhood,
-          phone: place.phone,
-          website: place.website,
-          date_added: new Date(place.date_added).toLocaleString(),
-          category: place.category,
-          descriptors: place.descriptors,
-          features: place.features
-        })))
-      })
-      .catch(next)
+    const { searchTerm, category, neighborhood } = req.query
+    console.log('req.query', req.query)
+    console.log('searchTerm', searchTerm)
+    PlacesService.filterPlaceResults(knexInstance, searchTerm, category, neighborhood)
+    .then(places => {
+      res.json(places)
+    })
+    
+    /*.then(places => {
+      res.json(places.map(place => ({
+        id: place.id,
+        name: place.name,
+        address: place.address,
+        city: place.city,
+        state: place.state,
+        zipcode: place.zipcode,
+        latitude: place.latitude,
+        longitude: place.longitude,
+        neighborhood: place.neighborhood,
+        phone: place.phone,
+        website: place.website,
+        date_added: new Date(place.date_added).toLocaleString(),
+        category: place.category,
+        descriptors: place.descriptors,
+        features: place.features
+      })))
+    })*/
+    .catch(next)
   })
 
 placesRouter

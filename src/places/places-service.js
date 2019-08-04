@@ -17,24 +17,50 @@ const PlacesService = {
         'places.date_added',
         'places.category',
         'places.descriptors',
-        'places.features'
-        /* db.raw(
-          `SELECT array_to_json(array_agg(row_to_json(h)))
-            FROM (
-            SELECT day_id as "dayOfWeek", opens, closes 
-            FROM place_hours
-            WHERE place_id=places.id
-            ORDER BY place_id, day_id
-            ) h              
-          ) AS "hours"`
-        )*/
-      )  
-      /*.leftJoin(
-        'place_hours AS ph',
-        'places.id',
-        'ph.place_id'
-      )*/
-      
+        'places.features',
+        db.raw(
+          `(
+            select to_json(array_agg(to_json(h)))
+            from (
+             select day_id as "dayOfWeek", opens, closes 
+             from place_hours
+             where place_id=places.id
+             order by place_id, day_id
+             ) h              
+            ) as hours`
+        ),
+        db.raw(
+          `(
+            select to_json(array_agg(to_json(i)))
+            from (
+             select id, src, title, place_id, user_id, date_added 
+             from images
+             where place_id=places.id
+             order by user_id
+             ) i              
+            ) as images`
+        ),
+        db.raw(
+          `(
+            select to_json(array_agg(to_json(r)))
+            from (
+             select id, rating, text, place_id, user_id, date_created 
+             from reviews
+             where place_id=places.id
+             order by date_created DESC, user_id
+             ) r              
+            ) as reviews`
+        ),
+        db.raw(
+          `count(DISTINCT reviews) AS number_of_reviews`
+        ),
+        db.raw(
+          `AVG(reviews.rating) AS average_review_rating`
+        ),
+      )
+      .leftJoin('place_hours', 'place_hours.place_id', 'places.id')
+      .leftJoin('images', 'images.place_id', 'places.id')  
+      .leftJoin('reviews', 'reviews.place_id', 'reviews.id')
       .groupBy('places.id')
       .orderBy('places.id')
   },
@@ -44,13 +70,24 @@ const PlacesService = {
   filterPlaceResults(db, searchTerm, category, neighborhood) {
     return db
     .from('places')
-    .select('*')
-    .where('name', 'ILIKE', `%${searchTerm}%`)
-    .orWhere('category', 'ILIKE', `%${searchTerm}%`)
-    .orWhere('features', 'ILIKE', `%${searchTerm}%`)
-    .then(results => {
-      console.log(result)
-    })
+    .select('name')
+    .where('name', 'ILIKE', `%${searchTerm || ''}%`)
+    
+    /*.where(query => {
+      if (searchTerm) {
+        query.where('name', 'ILIKE', `%${searchTerm}%`)
+        query.orWhereRaw(category @> array[`%${searchTerm}%`])
+        query.orWhere('features', 'ILIKE', `%${searchTerm}%`)
+      }
+      if (category) {
+        query.where(`${category}`, 'category')
+      }
+      if (neighborhood) {
+        query.where(`${neighborhood}`, 'neighborhood')
+      }
+    })*/
+      
+    
   },
   paginatePlaces(db, page) {
     const placesPerPage = 10
