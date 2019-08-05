@@ -60,12 +60,13 @@ const PlacesService = {
       )
       .leftJoin('place_hours', 'place_hours.place_id', 'places.id')
       .leftJoin('images', 'images.place_id', 'places.id')  
-      .leftJoin('reviews', 'reviews.place_id', 'reviews.id')
+      .leftJoin('reviews', 'reviews.place_id', 'places.id')
       .groupBy('places.id')
       .orderBy('places.id')
   },
   getById(db, id) {
-    return PlacesService.getAllPlaces(db)
+    return PlacesService.filterPlaceResults(db)
+    // use places.id or pl.id here?
     .where('places.id', id)
     .first()
   },
@@ -95,6 +96,14 @@ const PlacesService = {
            order by place_id, day_id
            ) h              
           ) as hours`
+      ),
+      // category
+      db.raw(
+        `(array_agg(DISTINCT c.category_name)) as category`
+      ),
+      // descriptors
+      db.raw(
+        `(array_agg(DISTINCT d.descriptor)) as descriptors`
       ),
       db.raw(
         `(
@@ -140,7 +149,7 @@ const PlacesService = {
     })
     .leftJoin('place_hours', 'place_hours.place_id', 'pl.id')
     .leftJoin('images', 'images.place_id', 'pl.id')  
-    .leftJoin('reviews', 'reviews.place_id', 'reviews.id')
+    .leftJoin('reviews', 'reviews.place_id', 'pl.id')
     .leftJoin('place_category as pc', 'pc.place_id', 'pl.id')
     .leftJoin('category as c', 'c.id', 'pc.category_id')
     .leftJoin('place_descriptors as pd', 'pd.place_id', 'pl.id')
@@ -162,7 +171,7 @@ const PlacesService = {
               (SELECT tmp FROM (
                 SELECT
                   usr.id,
-                  usr.diplay_name,
+                  usr.display_name,
                   usr.email,
                   usr.date_created
               ) tmp)
@@ -186,6 +195,9 @@ const PlacesService = {
       .leftJoin('users AS usr',  'images.user_id', 'usr.id')
       .groupBy('rev.id', 'usr.id')
   },
+  getImagesforUser(db, user_id) {
+
+  },
   paginatePlaces(db, page) {
     const placesPerPage = 10
     const offset = placesPerPage * (page - 1)
@@ -199,6 +211,7 @@ const PlacesService = {
     })
   },
   serializePlace(place) {
+    const { hours, images, reviews } = place
     return {
       id: place.id,
       name: place.name,
@@ -214,7 +227,25 @@ const PlacesService = {
       date_added: new Date(place.date_added).toLocaleString(),
       category: place.category,
       descriptors: place.descriptors,
-      features: place.features,
+      // features: place.features,
+      images: images.map(image => (
+      {
+        id: image.id,
+        src: image.src,
+        title: image.title,
+        place_id: image.place_id,
+        user_id: image.user_id,
+        date_added: image.date_added
+      })),
+      reviews: reviews.map(review => (
+        {
+          id: review.id,
+          rating: review.rating,
+          text: review.text,
+          place_id: review.place_id,
+          user_id: review.user_id,
+          date_created: review.date_created
+        })),
       number_of_reviews: Number(place.number_of_reviews),
       average_review_rating: Math.round(place.average_review_rating)
     }
