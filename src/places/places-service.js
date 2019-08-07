@@ -86,6 +86,7 @@ const PlacesService = {
       'pl.phone',
       'pl.website',
       'pl.date_added',
+      'pl.features',
       db.raw(
         `(
           select to_json(array_agg(to_json(h)))
@@ -97,11 +98,9 @@ const PlacesService = {
            ) h              
           ) as hours`
       ),
-      // category
       db.raw(
         `(array_agg(DISTINCT c.category_name)) as category`
       ),
-      // descriptors
       db.raw(
         `(array_agg(DISTINCT d.descriptor)) as descriptors`
       ),
@@ -182,12 +181,19 @@ const PlacesService = {
           `(
             select to_json(array_agg(to_json(i)))
             from (
-             select id, src, title, place_id, user_id, date_added 
-             from images
-             where place_id=pl.id
-             order by user_id
-             ) i              
-            ) as images`
+             select id, src, title, place_id, date_added, 
+             (
+              row_to_json(
+                (SELECT u FROM (
+                  SELECT
+                  usr.id, 
+                  usr.display_name
+                ) u)
+              ) as "user"
+              where place_id=pl.id
+              order by user_id
+               ) i              
+              ) as images` 
         ),
       )
       .where('rev.place_id', place_id)
@@ -195,7 +201,7 @@ const PlacesService = {
       .leftJoin('users AS usr',  'images.user_id', 'usr.id')
       .groupBy('rev.id', 'usr.id')
   },
-  getImagesforUser(db, user_id) {
+  getPlaceImagesbyUser(db, user_id, place_id) {
 
   },
   paginatePlaces(db, page) {
@@ -225,9 +231,10 @@ const PlacesService = {
       phone: place.phone,
       website: place.website,
       date_added: new Date(place.date_added).toLocaleString(),
+      hours: hours,
       category: place.category,
       descriptors: place.descriptors,
-      // features: place.features,
+      features: place.features,
       images: images.map(image => (
       {
         id: image.id,
@@ -247,7 +254,7 @@ const PlacesService = {
           date_created: review.date_created
         })),
       number_of_reviews: Number(place.number_of_reviews),
-      average_review_rating: Math.round(place.average_review_rating)
+      average_review_rating: Number(place.average_review_rating).toFixed(2)
     }
   },
   serializePlaceReview(review) {

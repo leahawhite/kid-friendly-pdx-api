@@ -1,0 +1,2 @@
+ALTER TABLE images
+ADD review_id INTEGER REFERENCES users(id) ON DELETE CASCADE;

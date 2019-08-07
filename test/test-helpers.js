@@ -43,19 +43,11 @@ function makePlacesArray() {
       phone: "503-232-3004",
       website: "http://atlaspizzapdx.com",
       date_added: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
-      category: [ "restaurant" ],
-      descriptors: [ "pizza", "arcade", "beer" ],
       features: [
         "toys", 
         "play area", 
         "arcade",
-        "quick service",
-        "all ages",
-        "comfortable seating",
-        "friendly staff",
-        "highchairs/boosters",
-        "flexible",
-        "patio/sidewalk"
+        "quick service"
       ]
     },
     {
@@ -71,17 +63,10 @@ function makePlacesArray() {
       phone: "503-953-1250",
       website: "https://www.grandcentralbakery.com/find-us/portland/woodstock/",
       date_added: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
-      category: [ "restaurant" ],
-      descriptors: [ "cafe", "bakery", "pastries" ],
       features: [ 
         "quick service",
         "all ages",
-        "comfortable seating",
-        "friendly staff",
-        "highchairs/boosters",
-        "changing station",
-        "flexible",
-        "patio/sidewalk"
+        "comfortable seating"
       ]
     },
     {
@@ -97,172 +82,253 @@ function makePlacesArray() {
       phone: "503-232-4677",
       website: "https://hopworksbeer.com/eat/powell/",
       date_added: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
-      category: [ "restaurant" ],
-      descriptors: [ "pizza", "burgers", "beer"],
       features: [ 
         "toys", 
         "play area", 
         "all ages",
         "comfortable seating",
-        "friendly staff",
-        "kids menu",
-        "highchairs/boosters",
-        "changing station",
-        "flexible",
-        "patio/sidewalk"
+        "friendly staff"
       ]
     }
   ]
 }
 
-function makeHoursArray() {
+function makeHoursArray(places) {
   [
     {
       "id": 1,
       "dayOfWeek": "Monday",
       "opens": "12:00 pm",
       "closes": "11:00 pm",
-      "place_id": 1
+      "place_id": places[0]
     },
     {
       "id": 2,
       "dayOfWeek": "Tuesday",
       "opens": "12:00 pm",
       "closes": "11:00 pm",
-      "place_id": 1
+      "place_id": places[0]
     },
     {
       "id": 3,
       "dayOfWeek": "Wednesday",
       "opens": "12:00 pm",
       "closes": "11:00 pm",
-      "place_id": 1
+      "place_id": places[0]
     },
     {
       "id": 4,
       "dayOfWeek": "Thursday",
       "opens": "12:00 pm",
       "closes": "11:00 pm",
-      "place_id": 1
+      "place_id": places[0]
     },
     {
       "id": 5,
       "dayOfWeek": "Friday",
       "opens": "12:00 pm",
       "closes": "12:00 am",
-      "place_id": 1
+      "place_id": places[0]
     },
     {
       "id": 6,
       "dayOfWeek": "Saturday",
       "opens": "12:00 pm",
       "closes": "12:00 am",
-      "place_id": 1
+      "place_id": places[0]
     },
     {
       "id": 7,
       "dayOfWeek": "Sunday",
       "opens": "12:00 pm",
       "closes": "11:00 pm",
-      "place_id": 1
+      "place_id": places[0]
     },
     {
       "id": 8,
       "dayOfWeek": "Monday",
       "opens": "7:00 am",
       "closes": "6:00 pm",
-      "place_id": 2
+      "place_id": places[1]
     },
     {
       "id": 9,
       "dayOfWeek": "Tuesday",
       "opens": "7:00 am",
       "closes": "6:00 pm",
-      "place_id": 2
+      "place_id": places[1]
     },
     {
       "id": 10,
       "dayOfWeek": "Wednesday",
       "opens": "7:00 am",
       "closes": "6:00 pm",
-      "place_id": 2
+      "place_id": places[1]
     },
     {
       "id": 11,
       "dayOfWeek": "Thursday",
       "opens": "7:00 am",
       "closes": "6:00 pm",
-      "place_id": 2
+      "place_id": places[1]
     },
     {
       "id": 12,
       "dayOfWeek": "Friday",
       "opens": "7:00 am",
       "closes": "6:00 pm",
-      "place_id": 2
+      "place_id": places[1]
     },
     {
       "id": 13,
       "dayOfWeek": "Saturday",
       "opens": "7:00 am",
       "closes": "6:00 pm",
-      "place_id": 2
+      "place_id": places[1]
     },
     {
       "id": 14,
       "dayOfWeek": "Sunday",
       "opens": "7:00 am",
       "closes": "6:00 pm",
-      "place_id": 2
+      "place_id": places[1]
     },
     {
       "id": 15,
       "dayOfWeek": "Monday",
       "opens": "11:00 am",
       "closes": "11:00 pm",
-      "place_id": 3
+      "place_id": places[2]
     },
     {
       "id": 16,
       "dayOfWeek": "Tuesday",
       "opens": "11:00 am",
       "closes": "11:00 pm",
-      "place_id": 3
+      "place_id": places[2]
     },
     {
       "id": 17,
       "dayOfWeek": "Wednesday",
       "opens": "11:00 am",
       "closes": "11:00 pm",
-      "place_id": 3
+      "place_id": places[2]
     },
     {
       "id": 18,
       "dayOfWeek": "Thursday",
       "opens": "11:00 am",
       "closes": "11:00 pm",
-      "place_id": 3
+      "place_id": places[2]
     },
     {
       "id": 19,
       "dayOfWeek": "Friday",
       "opens": "11:00 am",
       "closes": "12:00 am",
-      "place_id": 3
+      "place_id": places[2]
     },
     {
       "id": 20,
       "dayOfWeek": "Saturday",
       "opens": "11:00 am",
       "closes": "12:00 am",
-      "place_id": 3
+      "place_id": places[2]
     },
     {
       "id": 21,
       "dayOfWeek": "Sunday",
       "opens": "11:00 am",
       "closes": "11:00 pm",
-      "place_id": 3
+      "place_id": places[2]
+    }
+  ]
+}
+
+function makeCategoryArray() { 
+  [ 
+    { 
+      "id": 1,
+      "category_name": "cat1"
+    },
+    { 
+      "id": 2,
+      "category_name": "cat2"
+    },
+    { 
+      "id": 3,
+      "category_name": "cat3"
+    }
+  ]
+}
+
+function makePlaceCategoryArray(places, category) {
+  [
+    { 
+      "place_id": places[0],
+      "category_id": 1 
+    },
+    { 
+      "place_id": places[1],
+      "category_id": 2 
+    },
+    { 
+      "place_id": places[2],
+      "category_id": 3 
+    },
+  ]
+}
+
+function makeDescriptorsArray() {
+  [
+    {
+      "id": 1,
+      "descriptor": "desc1"
+    },
+    {
+      "id": 2,
+      "descriptor": "desc2"
+    },
+    {
+      "id": 3,
+      "descriptor": "desc3"
+    },
+    {
+      "id": 4,
+      "descriptor": "desc4"
+    },
+    {
+      "id": 5,
+      "descriptor": "desc5"
+    },
+  ]
+}
+
+function makePlaceDescriptorsArray(places) {
+  [
+    {
+      "place_id": places[0],
+      "descriptor_id": 1
+    },
+    {
+      "place_id": places[0],
+      "descriptor_id": 2
+    },
+    {
+      "place_id": places[1],
+      "descriptor_id": 3
+    },
+    {
+      "place_id": places[1],
+      "descriptor_id": 4
+    },
+    {
+      "place_id": places[2],
+      "descriptor_id": 1
+    },
+    {
+      "place_id": places[2],
+      "descriptor_id": 5
     }
   ]
 }
@@ -328,10 +394,14 @@ function makeReviewsArray(users, places) {
 function makePlacesFixtures() {
   const testUsers = makeUsersArray()
   const testPlaces = makePlacesArray()
-  const testHours = makeHoursArray()
+  const testHours = makeHoursArray(testPlaces)
+  const testCategory = makeCategoryArray()
+  const testPlaceCategory = makePlaceCategoryArray(testPlaces)
+  const testDescriptors = makeDescriptorsArray()
+  const testPlaceDescriptors = makePlaceDescriptorsArray(testPlaces)
   const testImages = makeImagesArray(testPlaces, testUsers)
   const testReviews = makeReviewsArray(testUsers, testPlaces)
-  return { testUsers, testPlaces, testHours, testImages, testReviews }
+  return { testUsers, testPlaces, testHours, testCategory, testPlaceCategory, testDescriptors, testPlaceDescriptors, testImages, testReviews }
 }
 
 function cleanTables(db) {
@@ -339,7 +409,11 @@ function cleanTables(db) {
     trx.raw(
     `TRUNCATE
       places,
-      place_hours,  
+      place_hours,
+      category,
+      place_category,
+      descriptors,
+      place_descriptors,  
       users,
       images,
       reviews
@@ -349,6 +423,8 @@ function cleanTables(db) {
       Promise.all([
         trx.raw(`ALTER SEQUENCE places_id_seq minvalue 0 START WITH 1`),
         trx.raw(`ALTER SEQUENCE place_hours_id_seq minvalue 0 START WITH 1`),
+        trx.raw(`ALTER SEQUENCE category_id_seq minvalue 0 START WITH 1`),
+        trx.raw(`ALTER SEQUENCE descriptors_id_seq minvalue 0 START WITH 1`),
         trx.raw(`ALTER SEQUENCE users_id_seq minvalue 0 START WITH 1`),
         trx.raw(`ALTER SEQUENCE reviews_id_seq minvalue 0 START WITH 1`),
         trx.raw(`SELECT setval('places_id_seq', 0)`),
@@ -375,17 +451,37 @@ function seedUsers(db, users) {
     )
 }
 
-function seedPlacesTables(db, users, places, place_hours=[], images=[], reviews=[]) {
+function seedPlacesTables(db, users, places, place_hours, category, place_category, descriptors, place_descriptors, images=[], reviews=[]) {
   // use a transaction to group the queries and auto rollback on any failure
   return db.transaction(async trx => {
     await seedUsers(trx, users)
     await trx.into('places').insert(places)
-    // await trx.into('places').insert(place_hours) (how to do this?)
     // update the auto sequence to match the forced id values
     await trx.raw(
       `SELECT setval('places_id_seq', ?)`,
       [places[places.length - 1].id]
     )
+    /*await trx.into('place_hours').insert(place_hours)
+    await trx.raw(
+      `SELECT setval('place_hours_id_seq', ?)`,
+      [place_hours[place_hours.length - 1].id]
+    )
+    await trx.into('category').insert(category)
+    await trx.raw(
+      `SELECT setval('category_id_seq', ?)`,
+      [category[category.length - 1].id]
+    )
+    await trx.into('place_category').insert(place_category)
+    await trx.into('descriptors').insert(descriptors)
+    await trx.raw(
+      `SELECT setval('descriptors_id_seq', ?)`,
+      [descriptors[descriptors.length - 1].id]
+    )
+    await trx.into('place_descriptors').insert(place_descriptors)
+    await trx.raw(
+      `SELECT setval('descriptors_id_seq', ?)`,
+      [descriptors[descriptors.length - 1].id]
+    )*/
     // only insert reviews if there are some, also update sequence count
     if (reviews.length) {
       await trx.into('reviews').insert(reviews)
@@ -400,9 +496,10 @@ function seedPlacesTables(db, users, places, place_hours=[], images=[], reviews=
   })
 }
 
-function makeExpectedPlace(place, place_hours=[], images=[], reviews=[]) {
-  const placeHours = place_hours
-    .filter(place => place_hours.place_id === place.id)
+function makeExpectedPlace(place, users, place_hours, category, place_category, descriptors, place_descriptors, images=[], reviews=[]) {
+  // how to do category and descriptor tests here?
+  /*const placeHours = place_hours
+    .filter(place_hours => place_hours.place_id === place.id)*/
   const placeReviews = reviews
     .filter(review => review.place_id === place.id)
   const placeImages = images
@@ -419,12 +516,12 @@ function makeExpectedPlace(place, place_hours=[], images=[], reviews=[]) {
     latitude: place.latitude,
     longitude: place.longitude,
     neighborhood: place.neighborhood,
-    hours: placeHours,
+    // hours: placeHours,
     phone: place.phone,
     website: place.website,
     date_added: new Date(place.date_added),
-    category: place.category,
-    descriptors: place.descriptors,
+    // category: place.category,
+    // descriptors: place.descriptors,
     features: place.features,
     reviews: placeReviews,
     number_of_reviews,
@@ -480,7 +577,7 @@ function calculateAverageReviewRating(reviews) {
     .map(review => review.rating)
     .reduce((a, b) => a + b)
 
-  return Math.round(sum / reviews.length)
+  return Number(sum / reviews.length).toFixed(2)
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
@@ -495,6 +592,10 @@ module.exports = {
   makeUsersArray,
   makePlacesArray,
   makeHoursArray,
+  makeCategoryArray,
+  makePlaceCategoryArray,
+  makeDescriptorsArray,
+  makePlaceDescriptorsArray,
   makeImagesArray,
   makeReviewsArray,
   

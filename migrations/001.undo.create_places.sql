@@ -1,2 +1,3 @@
 DROP TABLE IF EXISTS places;
-DROP TABLE IF EXISTS place_hours;
+
+

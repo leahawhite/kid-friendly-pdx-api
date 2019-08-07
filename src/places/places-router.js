@@ -9,13 +9,12 @@ placesRouter
     const knexInstance = req.app.get('db')
     const { searchTerm, category, neighborhood } = req.query
     PlacesService.filterPlaceResults(knexInstance, searchTerm, category, neighborhood)
-    .then(places => res.json(places))
-   /*.then(places => {
-      res.json(places.map(PlacesServices.serializePlace))
-    })*/
+    .then(places => 
+      res.json(places.map(PlacesService.serializePlace))
+    )
     .catch(next)
   })
-
+  
 placesRouter
   .route('/:placeId')
   .get(checkPlaceExists, (req, res) => {
