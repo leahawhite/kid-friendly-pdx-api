@@ -19,14 +19,13 @@ usersRouter
     const passwordError = UsersService.validatePassword(password)
     if (passwordError)
       return res.status(400).json({ error: passwordError })
-    // not sure why this isn't working after validatePassword fx created
+    
     if (display_name.length < 3 || display_name.length > 20) {
       return res.status(400).json({
         error: `Display name must be between 3 and 20 characters`
       })
     }
     
-    // how to construct this promise for both fields? it's looping.
     UsersService.hasUserWithEmail(
       req.app.get('db'),
       email

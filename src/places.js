@@ -49,7 +49,7 @@ module.exports = [
           "closes": "11:00 pm",
         },
       ],
-      date_added: "2019-06-13",
+      date_created: "2019-06-13",
       category: [ "restaurant" ],
       descriptors: [ "pizza", "arcade", "beer" ],
       features: { 
@@ -164,7 +164,7 @@ module.exports = [
           "closes": "6:00 pm",
         },
       ],
-      date_added: "2019-06-13",
+      date_created: "2019-06-13",
       category: [ "restaurant" ],
       descriptors: [ "cafe", "bakery", "pastries", ],
       features: { 
@@ -264,7 +264,7 @@ module.exports = [
           "closes": "11:00 pm",
         },
       ],
-      date_added: "2019-06-13",
+      date_created: "2019-06-13",
       category: [ "restaurant" ],
       descriptors: [ "pizza", "burgers", "beer",],
       features: { 
@@ -370,7 +370,7 @@ module.exports = [
           "closes": "05:00 pm",
         },
       ],
-      date_added: "2019-07-06",
+      date_created: "2019-07-06",
       category: [ "toy store", "indoor play" ],
       descriptors: [ "toy store", "indoor play", "community space" ],
       features: { 
@@ -469,7 +469,7 @@ module.exports = [
           "closes": "10:00 pm",
         },
       ],
-      date_added: "2019-07-10",
+      date_created: "2019-07-10",
       category: [ "park", "attraction" ],
       descriptors: [ "garden", "park", "wildlife" ],
       features: { 

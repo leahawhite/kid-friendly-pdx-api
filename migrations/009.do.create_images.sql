@@ -4,5 +4,5 @@ CREATE TABLE images (
   title TEXT,
   place_id INTEGER REFERENCES places(id) ON DELETE CASCADE NOT NULL,
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE NOT NULL,
-  date_added TIMESTAMP DEFAULT now() NOT NULL
+  date_created TIMESTAMP DEFAULT now() NOT NULL
 );

@@ -52,7 +52,7 @@ CREATE TABLE places (
   hours json not null,
   phone VARCHAR(30) NOT NULL, 
   website TEXT NOT NULL,
-  date_added DATE DEFAULT CURRENT_DATE NOT null,
+  date_created DATE DEFAULT CURRENT_DATE NOT null,
   category category [] not null,
   descriptors text [] not null,
   features feature [] not null,
@@ -60,7 +60,7 @@ CREATE TABLE places (
 );
 
 INSERT INTO places
-  (name, address1, address2, city, state, zipcode, latitude, longitude, neighborhood, hours, phone, website, date_added, category, descriptors, features, images)
+  (name, address1, address2, city, state, zipcode, latitude, longitude, neighborhood, hours, phone, website, date_created, category, descriptors, features, images)
 VALUES
   ('Atlas Pizza', '6529 SE Foster Rd', null, 'Portland', 'OR', '97206', '45.489200', '-122.595070', 'SE', '[{"dayOfWeek": "Monday",
           "opens": "12:00 pm", "closes": "11:00 pm"}, {"dayOfWeek":"Tuesday", "opens":"12:00 pm", "closes":"11:00 pm"},

@@ -11,5 +11,5 @@ CREATE TABLE places (
   neighborhood TEXT NOT NULL, 
   phone VARCHAR(30) NOT NULL, 
   website TEXT NOT NULL,
-  date_added DATE DEFAULT now() NOT NULL
+  date_created DATE DEFAULT now() NOT NULL
 );

@@ -23,7 +23,7 @@ describe('Users Endpoints', () => {
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  describe('POST /users', () => {
+  describe('POST /api/users', () => {
     context('User validation', () => {
       beforeEach('insert users', () =>
         helpers.seedUsers(
@@ -45,7 +45,7 @@ describe('Users Endpoints', () => {
           delete registerAttemptBody[field]
 
           return supertest(app)
-            .post('/users')
+            .post('/api/users')
             .send(registerAttemptBody)
             .expect(400, {
               error: `Missing '${field}' in request body`,
@@ -61,7 +61,7 @@ describe('Users Endpoints', () => {
           }
 
           return supertest(app)
-            .post('/users')
+            .post('/api/users')
             .send(nameTooShortBody)
             .expect(400, {
               error: 'Display name must be between 3 and 20 characters',
@@ -76,7 +76,7 @@ describe('Users Endpoints', () => {
           }
 
           return supertest(app)
-            .post('/users')
+            .post('/api/users')
             .send(nameTooLongBody)
             .expect(400, {
               error: 'Display name must be between 3 and 20 characters',
@@ -91,7 +91,7 @@ describe('Users Endpoints', () => {
           }
 
           return supertest(app)
-            .post('/users')
+            .post('/api/users')
             .send(shortPwdBody)
             .expect(400, {
               error: 'Password must be between 6 and 36 characters',
@@ -106,7 +106,7 @@ describe('Users Endpoints', () => {
           }
 
           return supertest(app)
-            .post('/users')
+            .post('/api/users')
             .send(longPwdBody)
             .expect(400, {
               error: 'Password must be between 6 and 36 characters',
@@ -121,7 +121,7 @@ describe('Users Endpoints', () => {
           }
 
           return supertest(app)
-            .post('/users')
+            .post('/api/users')
             .send(noDigitPwdBody)
             .expect(400, {
               error: 'Password must contain at least one digit',
@@ -135,7 +135,7 @@ describe('Users Endpoints', () => {
             password: '11AAaa!!'
           }
           return supertest(app)
-            .post('/users')
+            .post('/api/users')
             .send(duplicateUser)
             .expect(400, { error: `Display name has already been taken` })
         })
@@ -147,7 +147,7 @@ describe('Users Endpoints', () => {
             password: '11AAaa!!'
           }
           return supertest(app)
-            .post('/users')
+            .post('/api/users')
             .send(duplicateUser)
             .expect(400, { error: `Email has already been registered` })
         })
@@ -155,14 +155,14 @@ describe('Users Endpoints', () => {
     })
 
     context('Successful registration', () => {
-      it.skip(`responds 201, serialized user, storing bcrypted password`, () => {
+      it(`responds 201, serialized user, storing bcrypted password`, () => {
         const newUser = {
           display_name: 'test user_name',
           email: 'test email',
           password: '11AAaa!!',
         }
         return supertest(app)
-          .post('/users')
+          .post('/api/users')
           .send(newUser)
           .expect(201)
           .expect(res => {
@@ -170,7 +170,7 @@ describe('Users Endpoints', () => {
             expect(res.body.display_name).to.eql(newUser.display_name)
             expect(res.body.email).to.eql(newUser.email)
             expect(res.body).to.not.have.property('password')
-            expect(res.headers.location).to.eql(`/users/${res.body.id}`)
+            expect(res.headers.location).to.eql(`/api/users/${res.body.id}`)
             const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
             const actualDate = new Date(res.body.date_created).toLocaleString()
             expect(actualDate).to.eql(expectedDate)

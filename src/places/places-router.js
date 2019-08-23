@@ -16,38 +16,27 @@ placesRouter
   })
   
 placesRouter
-  .route('/:placeId')
-  .get(checkPlaceExists, (req, res) => {
+  .route('/:place_id')
+  .all(checkPlaceExists)
+  .get((req, res) => {
+    // res.json(PlacesService.serializePlace(res.place))
     res.json(res.place)
   })
   
 placesRouter
-  .route('/:placeId/reviews')
-  .get(checkPlaceExists, (req, res, next) => {
+  .route('/:place_id/reviews')
+  .all(checkPlaceExists)
+  .get((req, res, next) => {
     PlacesService.getReviewsForPlace(
       req.app.get('db'),
       req.params.place_id
     )
-    /*.then(reviews => {
+    .then(reviews => {
       res.json(reviews.map(PlacesService.serializePlaceReview))
-    })*/
-    .then(reviews => res.json(reviews))
+    })
     .catch(next)
   })
 
-/*placesRouter
-  .route('/:placeId/images')
-  .get(checkPlaceExists, (req, res, next) => {
-    PlacesService.getImagesForPlace(
-      req.app.get('db'),
-      req.params.place_id
-    )
-    .then(images => {
-      res.json(images.map(PlacesService.serializePlaceImage))
-    })
-    .catch(next)
-  })*/
-  
   async function checkPlaceExists(req, res, next) {
     try {
       const place = await PlacesService.getById(

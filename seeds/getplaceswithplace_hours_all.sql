@@ -10,7 +10,7 @@ select
 	places.neighborhood,
 	places.phone,
 	places.website,
-	places.date_added,
+	places.date_created,
 	places.category,
 	places.descriptors,
 	places.features,

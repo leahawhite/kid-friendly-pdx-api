@@ -10,6 +10,6 @@ CREATE TABLE places (
   neighborhood text NOT NULL, 
   phone VARCHAR(30) NOT NULL, 
   website TEXT NOT NULL,
-  date_added TIMESTAMP DEFAULT now() NOT NULL,
+  date_created TIMESTAMP DEFAULT now() NOT NULL,
   features TEXT [] NOT NULL
 );

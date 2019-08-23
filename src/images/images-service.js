@@ -1,3 +1,5 @@
+const xss = require('xss')
+
 const ImagesService = {
   getAllImages(db) {
     return db.select('*').from('images')
@@ -17,17 +19,20 @@ const ImagesService = {
         ImagesService.getById(db, image.id)
       )
   },
-  uploadImagesToCloud() {
-
+  serializeCloudinaryImage(image) {
+    return {
+      id: image.public_id,
+      src: image.secure_url,
+    }
   },
   serializeImage(image) {
     return {
       id: image.id,
-      src: image.src,
-      title: image.title,
+      src: xss(image.src),
+      title: xss(image.title),
       place_id: image.place_id,
       user_id: image.user_id,
-      date_added: new Date(image.date_added).toLocaleString(),
+      date_created: new Date(image.date_created),
     }
   },
 }

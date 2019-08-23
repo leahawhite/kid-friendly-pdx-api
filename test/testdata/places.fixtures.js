@@ -12,7 +12,7 @@ function makePlacesArray() {
       neighborhood: "SE",
       phone: "503-232-3004",
       website: "http://atlaspizzapdx.com",
-      date_added: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
+      date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
       category: [ "restaurant" ],
       descriptors: [ "pizza", "arcade", "beer" ],
       features: [
@@ -77,7 +77,7 @@ function makePlacesArray() {
       neighborhood: "SE",
       phone: "503-953-1250",
       website: "https://www.grandcentralbakery.com/find-us/portland/woodstock/",
-      date_added: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
+      date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
       category: [ "restaurant" ],
       descriptors: [ "cafe", "bakery", "pastries" ],
       features: [ 
@@ -140,7 +140,7 @@ function makePlacesArray() {
       neighborhood: "SE",
       phone: "503-232-4677",
       website: "https://hopworksbeer.com/eat/powell/",
-      date_added: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
+      date_created: new Date("2019-06-13").toLocaleString('en', { timeZone: 'UTC' }),
       category: [ "restaurant" ],
       descriptors: [ "pizza", "burgers", "beer"],
       features: [ 

@@ -2,19 +2,19 @@ const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-describe('Places Endpoints', () => {
+describe.only('Places Endpoints', () => {
   let db
 
   const {
     testUsers, 
     testPlaces, 
     testHours, 
-    testCategory, 
-    testPlaceCategory, 
+    testCategories, 
+    testPlaceCategories, 
     testDescriptors, 
-    testPlaceDescriptors, 
-    testImages, 
-    testReviews
+    testPlaceDescriptors,
+    testReviews, 
+    testImages
   } = helpers.makePlacesFixtures()
 
   before('make knex instance', () => {
@@ -40,28 +40,35 @@ describe('Places Endpoints', () => {
       })
     })
 
-    context.only(`Given 'places' has data`, () => {
+    context(`Given 'places' has data`, () => {
       const testPlaces = helpers.makePlacesArray()
-      beforeEach('insert places', () => {
+      
+      beforeEach('seed tables', () => {
         helpers.seedPlacesTables(
           db,
           testUsers, 
           testPlaces, 
           testHours, 
-          testCategory, 
-          testPlaceCategory, 
+          testCategories, 
+          testPlaceCategories, 
           testDescriptors, 
           testPlaceDescriptors, 
-          testImages, 
+          testImages,
           testReviews
         )
       })
-
+      
+      // need to do a test with no query params and one with, .query({ searchTerm: 'pizza', category: 'restaurant', neighborhood: 'SE' })
       it(`responds with 200 and all of the places`, () => {
         const expectedPlaces = testPlaces.map(place =>
           helpers.makeExpectedPlace(
-            testUsers,
-            place,
+            testUsers, 
+            place, 
+            testHours, 
+            testCategories, 
+            testPlaceCategories, 
+            testDescriptors, 
+            testPlaceDescriptors, 
             testImages,
             testReviews
           ))
@@ -82,25 +89,37 @@ describe('Places Endpoints', () => {
         const placeId = 123456
         return supertest(app)
           .get(`/api/places/${placeId}`)
-          .expect(404, { error: { message: `Place doesn't exist`}})
+          .expect(404, { error: `Place not found`})
       })
     })
 
-    context(`Given 'places' has data`, () => {
-      beforeEach('insert articles', () =>
-        helpers.seedArticlesTables(
+    context.only(`Given 'places' has data`, () => {
+      beforeEach('insert places', () =>
+        helpers.seedPlacesTables(
           db,
-          testUsers,
-          testArticles,
-          testComments,
+          testUsers, 
+          testPlaces, 
+          testHours, 
+          testCategories, 
+          testPlaceCategories, 
+          testDescriptors, 
+          testPlaceDescriptors, 
+          testImages,
+          testReviews
         )
       )
       
       it('responds with 200 and the specified place', () => {
         const placeId = 2
         const expectedPlace = helpers.makeExpectedPlace(
-          testUsers,
-          testPlaces[placeId-1],
+          testUsers, 
+          testPlaces[placeId-1], 
+          testHours, 
+          testCategories, 
+          testPlaceCategories, 
+          testDescriptors, 
+          testPlaceDescriptors, 
+          testImages,
           testReviews
         )
         return supertest(app)
@@ -111,7 +130,7 @@ describe('Places Endpoints', () => {
   })
 
   describe(`GET /api/places/:place_id/reviews`, () => {
-    context(`Given no reviews`, () => {
+    context(`Given no places`, () => {
       beforeEach(() =>
         helpers.seedUsers(db, testUsers)
       )
@@ -120,7 +139,7 @@ describe('Places Endpoints', () => {
         const placeId = 123456
         return supertest(app)
           .get(`/api/places/${placeId}/reviews`)
-          .expect(404, { error: `Review not found` })
+          .expect(404, { error: `Place not found` })
       })
     })
 
@@ -128,16 +147,22 @@ describe('Places Endpoints', () => {
       beforeEach('insert places', () =>
         helpers.seedPlacesTables(
           db,
-          testUsers,
-          testPlaces,
-          testReviews,
+          testUsers, 
+          testPlaces, 
+          testHours, 
+          testCategories, 
+          testPlaceCategories, 
+          testDescriptors, 
+          testPlaceDescriptors, 
+          testImages,
+          testReviews
         )
       )
 
       it('responds with 200 and the specified reviews', () => {
         const placeId = 1
         const expectedReviews = helpers.makeExpectedPlaceReviews(
-          testUsers, placeId, testReviews
+          testUsers, placeId, testReviews, testImages 
         )
 
         return supertest(app)
@@ -146,18 +171,18 @@ describe('Places Endpoints', () => {
       })
     })
     
-    /*context.skip('Given an XSS attack review', () => {
+    /*context('Given an XSS attack review', () => {
       const maliciousReview = {
         id: 911,
         rating: 5,
-        text: 'This text contains an intentionally broken image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie); alert(''you just got pretend hacked! oh noes!'');">. The image will try to load, when it fails, <strong>it executes malicious JavaScript</strong>',
+        text: 'Broken image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">.',
         place_id: 1,
         user_id: 1
       }
 
       beforeEach('insert malicious review', () => {
         return db
-          .into(places)
+          .into(reviews)
           .insert([ maliciousReview ])
       })
 
@@ -166,7 +191,7 @@ describe('Places Endpoints', () => {
           .get(`/api/places/${placeId}/reviews/${maliciousReview.id}`)
           .expect(200)
           .expect(res => {
-            expect(res.body.text).to.eql(`Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`)
+            expect(res.body.text).to.eql(`Broken image <img src="https://url.to.file.which/does-not.exist">.`)
           })
         })
     })*/

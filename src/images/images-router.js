@@ -19,7 +19,7 @@ const storage = cloudinaryStorage({
   allowedFormats: ["jpg", "png", "gif"],
   transformation: [{ width: 456, height: 456, crop: "fill", gravity: "face" }]
 })
-const parser = multer({ storage: storage })
+const parser = multer({ storage: storage }).array('file')
 
 const imagesRouter = express.Router()
 
@@ -33,11 +33,10 @@ imagesRouter
       })
       .catch(next)
   })
-  // works but trying combo
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const images = req.body
     const userId = req.user.id
-    console.log('req.body', req.body)
+    // add a Promise.all here?
     images.forEach(image => {
       const { id, src, place_id } = image
       const newImage = { id, src, place_id }
@@ -51,6 +50,7 @@ imagesRouter
       newImage.user_id = userId
       // newImage.title = req.body.title
 
+      // headers error is probably due to async of posting array? how to wait until all are posted before gathering response?
       ImagesService.insertImage(
         req.app.get('db'),
         newImage
@@ -66,58 +66,25 @@ imagesRouter
   })
   
 imagesRouter
-  .route('/:imageId')
+  .route('/:image_id')
   .get(checkImageExists, (req, res, next) => {
     res.json(ImagesService.serializeImage(res.image))
   })
 
 imagesRouter
+// should I use next middleware error handling instead of cloudinary's? how to format?
   .route('/upload')
-  .post(parser.array('file'), (req, res, err) => {
-    const images = req.files
-    console.log(images)
-    res.status(201).json(images.map(image => ({
-       id: image.public_id,
-       src: image.secure_url,
-      })))
+  .post((req, res)  => {
+    parser(req, res, function(err) {
+      const images = req.files
+      if (err) {
+        return res.status(500).json(err)
+      }
+      return res
+        .status(201)
+        .json(images.map(image => ImagesService.serializeCloudinaryImage(image)))
+    })
   })
-  /*.post(requireAuth, parser.array('myImages'), (req, res, next) => {
-    const images = req.files
-    console.log(images)
-    console.log('req.body', req.body)
-    images.map(image => ({
-      id: image.public_id,
-      src: image.secure_url,
-    }))
-    req.body.place_id = image.place_id
-    req.body.title = image.title
-  })
-    // cloudImages are req.files from upload; on client side, user confirms images and they become req.body
-
-    // id and src will come from cloudImages, title and place_id from client form
-    /*const { id, src, title, place_id } = req.body
-    const newImage = { id, src, title, place_id }
-  
-    for (const [key, value] of Object.entries(newImage))
-      if (value == null)
-        return res.status(400).json({
-          error: `Missing '${key}' in request body`
-        })
-    // user_id comes from auth 
-    newImage.user_id = req.user.id 
-    ImagesService.insertImage(
-      req.app.get('db'),
-      newImage
-    )
-      .then(image => {
-        res
-          .status(201)
-          .location(path.posix.join(req.originalUrl, `/${image.id}`))
-          .json(ImagesService.serializeImage(image))
-      })
-      .catch(next)
-    })*/
-
 
 async function checkImageExists(req, res, next) {
   try {

@@ -2,7 +2,29 @@ const xss = require('xss')
 
 const ReviewsService = {
   getAllReviews(db) {
-    return db.select('*').from('reviews')
+    return db
+      .from('reviews')
+      .select(
+        'reviews.id',
+        'reviews.rating',
+        'reviews.text',
+        'reviews.date_created',
+        'reviews.place_id',
+        db.raw(
+          `row_to_json(
+            (SELECT tmp FROM (
+              SELECT
+                users.id,
+                users.display_name
+            ) tmp)
+          ) AS "user"`
+        )
+      )
+      .leftJoin(
+        'users',
+        'reviews.user_id',
+        'users.id'
+      )
   },
   getById(db, id) {
     return db

@@ -28,10 +28,6 @@ app.use('/api/users', usersRouter)
 app.use('/api/login', authRouter)
 app.use('/api/images', imagesRouter)
 
-app.get('/', (req, res) => {
-  res.send('Hello, world!')
-})
-
 app.use(errorHandler)
 
 module.exports = app
