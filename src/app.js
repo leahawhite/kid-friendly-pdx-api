@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const morgan = require ('morgan')
 const cors = require('cors')
-// const {CLIENT_ORIGIN} = require('./config')
+const { CLIENT_ORIGIN } = require('./config')
 const helmet = require('helmet')
 const { NODE_ENV } = require('./config')
 const errorHandler = require('./error-handler')
@@ -19,7 +19,7 @@ const morganOption = (NODE_ENV === 'production')
   : 'common';
 
 app.use(morgan(morganOption))
-app.use(cors())
+app.use(cors({ CLIENT_ORIGIN }))
 app.use(helmet())
 
 app.use('/api/places', placesRouter)
