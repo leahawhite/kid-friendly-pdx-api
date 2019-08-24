@@ -1,10 +1,8 @@
-require('dotenv').config()
 const express = require('express')
 const morgan = require ('morgan')
 const cors = require('cors')
-const {CLIENT_ORIGIN} = require('./config')
+const { CLIENT_ORIGIN, NODE_ENV } = require('./config')
 const helmet = require('helmet')
-const { NODE_ENV } = require('./config')
 
 const app = express()
 
@@ -18,16 +16,9 @@ app.use(cors({
 }))
 app.use(helmet())
 
-const data = require('../data.js')
-
-app.get('/', (req, res) => {
-  // res.send('Hello, world!')
-  res.json(data)
-})
-
 app.use(function errorHandler(error, req, res, next) {
   let response
-    if (process.env.NODE_ENV === 'production') {
+    if (NODE_ENV === 'production') {
       response = { error: { message: 'server error' } }
     } else {
       console.error(error)
