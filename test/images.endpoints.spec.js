@@ -6,10 +6,15 @@ describe('Images Endpoints', function() {
   let db
 
   const {
-    testPlaces,
-    testUsers,
-    testReviews,
-    testImages
+    testUsers, 
+    testPlaces, 
+    // testHours, 
+    // testCategories, 
+    // testPlaceCategories, 
+    // testDescriptors, 
+    // testPlaceDescriptors,
+    // testReviews, 
+    // testImages
   } = helpers.makePlacesFixtures()
 
   before('make knex instance', () => {
@@ -30,10 +35,8 @@ describe('Images Endpoints', function() {
     beforeEach('insert tables', () =>
         helpers.seedPlacesTables(
           db,
-          testUsers,
-          testPlaces,
-          testReviews,
-          testImages
+          testUsers, 
+          testPlaces
         )
     )
       
@@ -66,6 +69,7 @@ describe('Images Endpoints', function() {
           expect(res.body.id).to.eql(newImage.id)
           expect(res.body.src).to.eql(newImage.src)
           expect(res.body.place_id).to.eql(newImage.place_id)
+          expect(res.body.title).to.eql(newImage.title)
           expect(res.body.user_id).to.eql(testUser.id)
           expect(res.headers.location).to.eql(`/api/images/${res.body.id}`)
           const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
@@ -82,6 +86,7 @@ describe('Images Endpoints', function() {
               expect(row.id).to.eql(newImage.id)
               expect(row.src).to.eql(newImage.src)
               expect(row.place_id).to.eql(newImage.place_id)
+              expect(row.title).to.eql(newImage.title)
               expect(row.user_id).to.eql(testUser.id)
               const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
               const actualDate = new Date(row.date_created).toLocaleString()

@@ -35,20 +35,21 @@ imagesRouter
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const images = req.body
+    console.log('images', images)
     const userId = req.user.id
     // add a Promise.all here?
-    images.forEach(image => {
-      const { id, src, place_id } = image
-      const newImage = { id, src, place_id }
+    images.map(image => {
+      const { id, src, place_id, title } = image
+      const requiredFields = { id, src, place_id}
   
-      for (const [key, value] of Object.entries(newImage))
+      for (const [key, value] of Object.entries(requiredFields))
         if (value == null)
           return res.status(400).json({
             error: `Missing '${key}' in request body`
           })
     
+      const newImage = { id, src, place_id, title }
       newImage.user_id = userId
-      // newImage.title = req.body.title
 
       // headers error is probably due to async of posting array? how to wait until all are posted before gathering response?
       ImagesService.insertImage(

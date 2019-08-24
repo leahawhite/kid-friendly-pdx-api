@@ -464,23 +464,23 @@ function seedPlacesTables(db, users, places, hours, categories, placecategories,
       `SELECT setval('places_id_seq', ?)`,
       [places[places.length - 1].id]
     )
-    await trx.into('place_hours').insert(hours)
-    await trx.raw(
-      `SELECT setval('place_hours_id_seq', ?)`,
-      [hours[hours.length - 1].id]
-    )
-    await trx.into('category').insert(categories)
-    await trx.raw(
-      `SELECT setval('category_id_seq', ?)`,
-      [categories[categories.length - 1].id]
-    )
-    await trx.into('place_category').insert(placecategories)
-    await trx.into('descriptors').insert(descriptors)
-    await trx.raw(
-      `SELECT setval('descriptors_id_seq', ?)`,
-      [descriptors[descriptors.length - 1].id]
-    )
-    await trx.into('place_descriptors').insert(placedescriptors)
+    // await trx.into('place_hours').insert(hours)
+    // await trx.raw(
+    //   `SELECT setval('place_hours_id_seq', ?)`,
+    //   [hours[hours.length - 1].id]
+    // )
+    // await trx.into('category').insert(categories)
+    // await trx.raw(
+    //   `SELECT setval('category_id_seq', ?)`,
+    //   [categories[categories.length - 1].id]
+    // )
+    // await trx.into('place_category').insert(placecategories)
+    // await trx.into('descriptors').insert(descriptors)
+    // await trx.raw(
+    //   `SELECT setval('descriptors_id_seq', ?)`,
+    //   [descriptors[descriptors.length - 1].id]
+    // )
+    // await trx.into('place_descriptors').insert(placedescriptors)
     
     // only insert reviews if there are some, also update sequence count
     if (reviews.length) {
