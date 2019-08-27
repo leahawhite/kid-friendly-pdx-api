@@ -9,9 +9,9 @@ placesRouter
     const knexInstance = req.app.get('db')
     const { searchTerm, category, neighborhood } = req.query
     PlacesService.filterPlaceResults(knexInstance, searchTerm, category, neighborhood)
-    .then(places => 
+    .then(places => { 
       res.json(places.map(PlacesService.serializePlace))
-    )
+    })
     .catch(next)
   })
   
@@ -19,8 +19,7 @@ placesRouter
   .route('/:place_id')
   .all(checkPlaceExists)
   .get((req, res) => {
-    // res.json(PlacesService.serializePlace(res.place))
-    res.json(res.place)
+    res.json(PlacesService.serializePlace(res.place))
   })
   
 placesRouter
@@ -44,11 +43,11 @@ placesRouter
         req.params.place_id
       )
   
-      if (!place)
+      if (!place) {
         return res.status(404).json({
           error: `Place not found`
         })
-  
+      }
       res.place = place
       next()
     } catch (error) {

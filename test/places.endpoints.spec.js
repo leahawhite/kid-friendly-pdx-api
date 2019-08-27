@@ -59,11 +59,11 @@ describe('Places Endpoints', () => {
       })
       
       // need to do a test with no query params and one with, .query({ searchTerm: 'pizza', category: 'restaurant', neighborhood: 'SE' })
-      it.skip(`responds with 200 and all of the places`, () => {
+      it(`responds with 200 and all of the places`, () => {
         const expectedPlaces = testPlaces.map(place =>
           helpers.makeExpectedPlace(
+            place,
             testUsers, 
-            place, 
             testHours, 
             testCategories, 
             testPlaceCategories, 
@@ -93,7 +93,7 @@ describe('Places Endpoints', () => {
       })
     })
 
-    context.skip(`Given 'places' has data`, () => {
+    context(`Given 'places' has data`, () => {
       beforeEach('insert places', () =>
         helpers.seedPlacesTables(
           db,
@@ -112,8 +112,8 @@ describe('Places Endpoints', () => {
       it('responds with 200 and the specified place', () => {
         const placeId = 2
         const expectedPlace = helpers.makeExpectedPlace(
-          testUsers, 
           testPlaces[placeId-1], 
+          testUsers, 
           testHours, 
           testCategories, 
           testPlaceCategories, 
@@ -170,30 +170,5 @@ describe('Places Endpoints', () => {
           .expect(200, expectedReviews)
       })
     })
-    
-    /*context('Given an XSS attack review', () => {
-      const maliciousReview = {
-        id: 911,
-        rating: 5,
-        text: 'Broken image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">.',
-        place_id: 1,
-        user_id: 1
-      }
-
-      beforeEach('insert malicious review', () => {
-        return db
-          .into(reviews)
-          .insert([ maliciousReview ])
-      })
-
-      it('removes XSS attack content', () => {
-        return supertest(app)
-          .get(`/api/places/${placeId}/reviews/${maliciousReview.id}`)
-          .expect(200)
-          .expect(res => {
-            expect(res.body.text).to.eql(`Broken image <img src="https://url.to.file.which/does-not.exist">.`)
-          })
-        })
-    })*/
-  })
+   })
 })

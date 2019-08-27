@@ -6,9 +6,15 @@ describe('Protected endpoints', () => {
   let db
 
   const {
-    testPlaces,
-    testUsers,
-    testReviews
+    testUsers, 
+    testPlaces, 
+    testHours, 
+    testCategories, 
+    testPlaceCategories, 
+    testDescriptors, 
+    testPlaceDescriptors,
+    testReviews, 
+    testImages
   } = helpers.makePlacesFixtures()
 
   before('make knex instance', () => {
@@ -28,9 +34,15 @@ describe('Protected endpoints', () => {
   beforeEach('insert places', () =>
     helpers.seedPlacesTables(
       db,
-      testUsers,
-      testPlaces,
-      testReviews,
+      testUsers, 
+      testPlaces, 
+      testHours, 
+      testCategories, 
+      testPlaceCategories, 
+      testDescriptors, 
+      testPlaceDescriptors, 
+      testImages,
+      testReviews
     )
   )
 

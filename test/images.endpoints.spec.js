@@ -8,13 +8,13 @@ describe('Images Endpoints', function() {
   const {
     testUsers, 
     testPlaces, 
-    // testHours, 
-    // testCategories, 
-    // testPlaceCategories, 
-    // testDescriptors, 
-    // testPlaceDescriptors,
-    // testReviews, 
-    // testImages
+    testHours, 
+    testCategories, 
+    testPlaceCategories, 
+    testDescriptors, 
+    testPlaceDescriptors,
+    testImages,
+    testReviews
   } = helpers.makePlacesFixtures()
 
   before('make knex instance', () => {
@@ -33,14 +33,21 @@ describe('Images Endpoints', function() {
 
   describe('POST /api/images', () => {
     beforeEach('insert tables', () =>
-        helpers.seedPlacesTables(
-          db,
-          testUsers, 
-          testPlaces
-        )
+      helpers.seedPlacesTables(
+        db,
+        testUsers, 
+        testPlaces, 
+        testHours, 
+        testCategories, 
+        testPlaceCategories, 
+        testDescriptors, 
+        testPlaceDescriptors, 
+        testImages,
+        testReviews
+      )
     )
       
-    it(`creates image(s) from an array of 1-3 images, responding with 201 and the new image(s)`, () => {
+    it.only(`creates image(s) from an array of 1-3 images, responding with 201 and the new image(s)`, () => {
       this.retries(3)
       const testPlace = testPlaces[0]
       const testUser = testUsers[0]

@@ -60,3 +60,8 @@ module.exports = [
     "feature": "rainy day fun" 
   }
 ] 
+
+athletic fields
+splash pad 
+indoor pool 
+outdoor pool 

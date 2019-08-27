@@ -20,7 +20,7 @@ const PlacesService = {
         `(
           select to_json(array_agg(to_json(h)))
           from (
-           select day_id as "dayOfWeek", opens, closes 
+           select id, day_id, opens, closes, place_id 
            from place_hours
            where place_id=pl.id
            order by place_id, day_id
@@ -147,21 +147,13 @@ const PlacesService = {
       phone: place.phone,
       website: place.website,
       date_created: new Date(place.date_created).toLocaleString(),
-      hours: place.hours,
+      hours: [...place.hours],
       category: place.category,
       descriptors: place.descriptors,
-      features: place.features,
-      images: place.images.map(image => (
-      {
-        id: image.id,
-        src: image.src,
-        title: image.title,
-        place_id: image.place_id,
-        user_id: image.user_id,
-        date_created: new Date(image.date_created).toLocaleString()
-      })),
-      number_of_reviews: Number(place.number_of_reviews),
-      average_review_rating: Number(place.average_review_rating).toFixed(2)
+      features: place.features ? place.features : [],
+      images: place.images ? place.images: [], 
+      number_of_reviews: Number(place.number_of_reviews) || 0,
+      average_review_rating: Number(place.average_review_rating).toFixed(2) || 0.00
     }
   },
 
@@ -184,8 +176,7 @@ const PlacesService = {
           title: image.title,
           place_id: image.place_id,
           user_id: image.user_id,
-          // why doesn't new Date work here?
-          date_created: new Date(image.date_created).toLocaleString()
+          date_created: image.date_created
         })),
     }
   }

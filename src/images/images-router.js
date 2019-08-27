@@ -37,7 +37,6 @@ imagesRouter
     const images = req.body
     console.log('images', images)
     const userId = req.user.id
-    // add a Promise.all here?
     images.map(image => {
       const { id, src, place_id, title } = image
       const requiredFields = { id, src, place_id}
@@ -51,7 +50,6 @@ imagesRouter
       const newImage = { id, src, place_id, title }
       newImage.user_id = userId
 
-      // headers error is probably due to async of posting array? how to wait until all are posted before gathering response?
       ImagesService.insertImage(
         req.app.get('db'),
         newImage
@@ -83,7 +81,7 @@ imagesRouter
       }
       return res
         .status(201)
-        .json(images.map(image => ImagesService.serializeCloudinaryImage(image)))
+        .json(images/*.map(image => ImagesService.serializeCloudinaryImage(image))*/)
     })
   })
 

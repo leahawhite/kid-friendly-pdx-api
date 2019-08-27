@@ -1,0 +1,35 @@
+it(`responds with 200 and all of the places matching the query`, () => {
+        const searchTerm = 'pizza'
+        const category = 'restaurant'
+        const neighborhood = 'SE'
+        const expectedPlaces = testPlaces.map(place =>
+          helpers.makeExpectedPlace(
+            place,
+            testUsers, 
+            testHours, 
+            testCategories, 
+            testPlaceCategories, 
+            testDescriptors, 
+            testPlaceDescriptors, 
+            testImages,
+            testReviews
+          ))
+        // let filteredPlaces
+        // if (searchTerm) {
+        //   filteredPlaces = expectedPlaces.filter(place => place.name.toLowerCase().includes(searchTerm))
+        //   || place.descriptors.includes(searchTerm) || place.category.includes(searchTerm))
+        // } 
+        // if (category) {
+        //   filteredPlaces = expectedPlaces.filter(place => place.category.indexOf(category) !== -1)
+        // } 
+        // if (neighborhood) {
+        //   filteredPlaces = expectedPlaces.filter(place => place.neighborhood.indexOf(neighborhood) !== -1)
+        // }
+        // console.log('filteredPlaces', filteredPlaces) 
+          return supertest(app)
+            .get('/api/places')
+            .query({searchTerm: searchTerm, category: category, neighborhood: neighborhood})
+            .expect(200, expectedPlaces)
+      })
+    })
+  })

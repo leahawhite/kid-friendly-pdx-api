@@ -249,15 +249,15 @@ function makeCategoriesArray() {
   return  [ 
     { 
       id: 1,
-      category_name: 'cat1'
+      category_name: 'restaurant'
     },
     { 
       id: 2,
-      category_name: 'cat2'
+      category_name: 'museum'
     },
     { 
       id: 3,
-      category_name: 'cat3'
+      category_name: 'park'
     }
   ]
 }
@@ -270,11 +270,11 @@ function makePlaceCategoriesArray(places, categories) {
     },
     { 
       place_id: places[1].id,
-      category_id: categories[1].id
+      category_id: categories[0].id
     },
     { 
       place_id: places[2].id,
-      category_id: categories[2].id 
+      category_id: categories[0].id 
     }
   ]
 }
@@ -370,7 +370,7 @@ function makeImagesArray(users, places) {
       title: 'A pizza',
       place_id: places[0].id,
       user_id: users[0].id,
-      date_created: new Date('2019-06-13').toLocaleString('en', { timeZone: 'UTC' })
+      date_created: '2019-06-13T00:00:00'
     },
     {
       id: "2",
@@ -378,7 +378,7 @@ function makeImagesArray(users, places) {
       title: 'A rainbow',
       place_id: places[1].id,
       user_id: users[0].id,
-      date_created: new Date('2019-06-13').toLocaleString('en', { timeZone: 'UTC' }),
+      date_created: '2019-06-13T00:00:00'
     },
     {
       id: "3",
@@ -386,7 +386,7 @@ function makeImagesArray(users, places) {
       title: 'A loaf of bread',
       place_id: places[1].id,
       user_id: users[0].id,
-      date_created: new Date('2019-06-13').toLocaleString('en', { timeZone: 'UTC' }),
+      date_created: '2019-06-13T00:00:00'
     }
   ]
 }
@@ -399,10 +399,10 @@ function makePlacesFixtures() {
   const testPlaceCategories = makePlaceCategoriesArray(testPlaces, testCategories)
   const testDescriptors = makeDescriptorsArray()
   const testPlaceDescriptors = makePlaceDescriptorsArray(testPlaces, testDescriptors)
-  const testReviews = makeReviewsArray(testUsers, testPlaces)
   const testImages = makeImagesArray(testPlaces, testUsers)
-  
-  return { testUsers, testPlaces, testHours, testCategories, testPlaceCategories, testDescriptors, testPlaceDescriptors, testReviews, testImages }
+  const testReviews = makeReviewsArray(testUsers, testPlaces)
+    
+  return { testUsers, testPlaces, testHours, testCategories, testPlaceCategories, testDescriptors, testPlaceDescriptors, testImages, testReviews }
 }
 
 function cleanTables(db) {
@@ -454,8 +454,9 @@ function seedUsers(db, users) {
     )
 }
 
-function seedPlacesTables(db, users, places, hours, categories, placecategories, descriptors, placedescriptors, images=[], reviews=[]) {
+function seedPlacesTables(db, users, places, hours, categories, placecategories, descriptors, placedescriptors, images, reviews=[]) {
   // use a transaction to group the queries and auto rollback on any failure
+  
   return db.transaction(async trx => {
     await seedUsers(trx, users)
     await trx.into('places').insert(places)
@@ -464,25 +465,26 @@ function seedPlacesTables(db, users, places, hours, categories, placecategories,
       `SELECT setval('places_id_seq', ?)`,
       [places[places.length - 1].id]
     )
-    // await trx.into('place_hours').insert(hours)
-    // await trx.raw(
-    //   `SELECT setval('place_hours_id_seq', ?)`,
-    //   [hours[hours.length - 1].id]
-    // )
-    // await trx.into('category').insert(categories)
-    // await trx.raw(
-    //   `SELECT setval('category_id_seq', ?)`,
-    //   [categories[categories.length - 1].id]
-    // )
-    // await trx.into('place_category').insert(placecategories)
-    // await trx.into('descriptors').insert(descriptors)
-    // await trx.raw(
-    //   `SELECT setval('descriptors_id_seq', ?)`,
-    //   [descriptors[descriptors.length - 1].id]
-    // )
-    // await trx.into('place_descriptors').insert(placedescriptors)
-    
-    // only insert reviews if there are some, also update sequence count
+    await trx.into('place_hours').insert(hours)
+    await trx.raw(
+      `SELECT setval('place_hours_id_seq', ?)`,
+      [hours[hours.length - 1].id]
+    )
+    await trx.into('category').insert(categories)
+    await trx.raw(
+      `SELECT setval('category_id_seq', ?)`,
+      [categories[categories.length - 1].id]
+    )
+    await trx.into('place_category').insert(placecategories)
+    await trx.into('descriptors').insert(descriptors)
+    await trx.raw(
+      `SELECT setval('descriptors_id_seq', ?)`,
+      [descriptors[descriptors.length - 1].id]
+    )
+    await trx.into('place_descriptors').insert(placedescriptors)
+    if (images.length) {
+      await trx.into('images').insert(images)
+    }
     if (reviews.length) {
       await trx.into('reviews').insert(reviews)
       await trx.raw(
@@ -490,15 +492,12 @@ function seedPlacesTables(db, users, places, hours, categories, placecategories,
         [reviews[reviews.length - 1].id],
       )
     }
-    if (images.length) {
-      await trx.into('images').insert(images)
-    }
   })
 }
 
 function makeExpectedPlace(place, users, hours, categories, placecategories, descriptors, placedescriptors, images=[], reviews=[]) {
   const placeHours = hours.filter(hour => hour.place_id === place.id)
-  const placeCategs = placecategories.filter(placecat => placecat.place_id === 1)
+  const placeCategs = placecategories.filter(placecat => placecat.place_id === place.id)
   const namedCategories = placeCategs.map(placeCateg => 
     categories.filter(category => category.id === placeCateg.category_id)
     .map(cat => cat.category_name))
@@ -525,11 +524,10 @@ function makeExpectedPlace(place, users, hours, categories, placecategories, des
     hours: placeHours,
     phone: place.phone,
     website: place.website,
-    date_created: new Date(place.date_created),
+    date_created: new Date(place.date_created).toLocaleString(),
     category: namedCategories,
     descriptors: namedDescriptors,
     features: place.features,
-    reviews: placeReviews,
     number_of_reviews,
     average_review_rating,
     images: placeImages
@@ -553,13 +551,21 @@ function makeExpectedPlaceReviews(users, placeId, reviews, images) {
         id: reviewUser.id,
         display_name: reviewUser.display_name,
       },
-      images: reviewImages
+      images: reviewImages.map(image => (
+        {
+          id: image.id,
+          src: image.src,
+          title: image.title,
+          place_id: image.place_id,
+          user_id: image.user_id,
+          date_created: image.date_created
+        })),
     }
   })
 }
 
 function calculateAverageReviewRating(reviews) {
-  if(!reviews.length) return 0
+  if(!reviews.length) return '0.00'
 
   const sum = reviews
     .map(review => review.rating)
@@ -576,33 +582,14 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   return `Bearer ${token}`
 }
 
-function makeMaliciousReview() {
-  const maliciousReview = {
-    id: 911,
-    rating: 5,
-    text: 'Broken image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">.',
-    place_id: 1,
-    user_id: 1
-  }
-  const expectedReview = {
-    ...makeExpectedReview(maliciousReview),
-    text: 'Broken image <img src="https://url.to.file.which/does-not.exist">.',
-  }
-  return {
-    maliciousReview,
-    expectedReview,
-  }
-}
-
-  
 module.exports = {
   makeUsersArray,
   makePlacesArray,
-  // makeHoursArray,
-  // makeCategoriesArray,
-  // makePlaceCategoriesArray,
-  // makeDescriptorsArray,
-  // makePlaceDescriptorsArray,
+  makeHoursArray,
+  makeCategoriesArray,
+  makePlaceCategoriesArray,
+  makeDescriptorsArray,
+  makePlaceDescriptorsArray,
   makeReviewsArray,
   makeImagesArray,
   
@@ -613,6 +600,5 @@ module.exports = {
   cleanTables,
   makeExpectedPlace,
   makeExpectedPlaceReviews,
-  makeAuthHeader,
-  makeMaliciousReview
+  makeAuthHeader
 }

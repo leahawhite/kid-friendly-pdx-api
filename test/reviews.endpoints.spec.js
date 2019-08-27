@@ -6,8 +6,15 @@ describe('Reviews Endpoints', () => {
   let db
 
   const {
-    testPlaces,
-    testUsers
+    testUsers, 
+    testPlaces, 
+    testHours, 
+    testCategories, 
+    testPlaceCategories, 
+    testDescriptors, 
+    testPlaceDescriptors,
+    testReviews, 
+    testImages
   } = helpers.makePlacesFixtures()
 
   before('make knex instance', () => {
@@ -29,8 +36,15 @@ describe('Reviews Endpoints', () => {
     beforeEach('insert places', () =>
       helpers.seedPlacesTables(
         db,
-        testUsers,
-        testPlaces
+        testUsers, 
+        testPlaces, 
+        testHours, 
+        testCategories, 
+        testPlaceCategories, 
+        testDescriptors, 
+        testPlaceDescriptors, 
+        testImages,
+        testReviews
       )
     )
 
