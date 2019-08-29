@@ -72,6 +72,7 @@ describe('Places Endpoints', () => {
             testImages,
             testReviews
           ))
+          
           return supertest(app)
             .get('/api/places')
             .expect(200, expectedPlaces)

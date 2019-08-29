@@ -1,6 +1,5 @@
 require('dotenv').config()
 const express = require('express')
-const path = require('path')
 const cloudinary = require('cloudinary')
 const cloudinaryStorage = require('multer-storage-cloudinary')
 const multer = require('multer')
@@ -23,6 +22,16 @@ const parser = multer({ storage: storage }).array('file')
 
 const imagesRouter = express.Router()
 
+const hasInvalidFields = (requiredFields) => {
+  const missingFields = [];
+  for (const [key, value] of Object.entries(requiredFields)) {
+    if (value == null) {
+      missingFields.push(key);
+    }
+  }
+  return missingFields;
+}
+
 imagesRouter
   .route('/')
   .get((req, res, next) => {
@@ -34,34 +43,27 @@ imagesRouter
       .catch(next)
   })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
-    const images = req.body
-    console.log('images', images)
     const userId = req.user.id
-    images.map(image => {
-      const { id, src, place_id, title } = image
-      const requiredFields = { id, src, place_id}
-  
-      for (const [key, value] of Object.entries(requiredFields))
-        if (value == null)
-          return res.status(400).json({
-            error: `Missing '${key}' in request body`
-          })
-    
-      const newImage = { id, src, place_id, title }
-      newImage.user_id = userId
 
-      ImagesService.insertImage(
+    const images = req.body.map(image => {
+      const { id, src, place_id, title } = image
+      const requiredFields = { id, src, place_id }
+
+      const invalidFields = hasInvalidFields(requiredFields)
+
+      if (invalidFields.length) {
+        throw new Error(`Missing ${invalidFields.join()} in request body`)
+      }
+      const newImage = { id, src, place_id, title, user_id: userId }
+
+      return ImagesService.insertImage(
         req.app.get('db'),
         newImage
       )
-        .then(image => {
-          res
-            .status(201)
-            .location(path.posix.join(req.originalUrl, `/${image.id}`))
-            .json(ImagesService.serializeImage(image))
-        })
-        .catch(next)
     })
+    return Promise.all(images)
+      .then(_ => res.sendStatus(201))
+      .catch(next)
   })
   
 imagesRouter
@@ -71,9 +73,8 @@ imagesRouter
   })
 
 imagesRouter
-// should I use next middleware error handling instead of cloudinary's? how to format?
   .route('/upload')
-  .post((req, res)  => {
+  .post((req, res) => {
     parser(req, res, function(err) {
       const images = req.files
       if (err) {
@@ -81,7 +82,7 @@ imagesRouter
       }
       return res
         .status(201)
-        .json(images/*.map(image => ImagesService.serializeCloudinaryImage(image))*/)
+        .json(images.map(image => ImagesService.serializeCloudinaryImage(image)))
     })
   })
 

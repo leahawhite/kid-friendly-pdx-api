@@ -47,7 +47,7 @@ describe('Images Endpoints', function() {
       )
     )
       
-    it.only(`creates image(s) from an array of 1-3 images, responding with 201 and the new image(s)`, () => {
+    it(`creates image(s) from an array of 1-3 images, responding with 201 and the new image(s)`, () => {
       this.retries(3)
       const testPlace = testPlaces[0]
       const testUser = testUsers[0]
@@ -65,75 +65,28 @@ describe('Images Endpoints', function() {
           "place_id": testPlace.id
         },
       ]
-      const newImage = newImages[0]
-
+      
       return supertest(app)
         .post('/api/images')
         .set('Authorization', helpers.makeAuthHeader(testUser))
         .send(newImages)
         .expect(201)
-        .expect(res => {
-          expect(res.body.id).to.eql(newImage.id)
-          expect(res.body.src).to.eql(newImage.src)
-          expect(res.body.place_id).to.eql(newImage.place_id)
-          expect(res.body.title).to.eql(newImage.title)
-          expect(res.body.user_id).to.eql(testUser.id)
-          expect(res.headers.location).to.eql(`/api/images/${res.body.id}`)
-          const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
-          const actualDate = new Date(res.body.date_created).toLocaleString()
-          expect(actualDate).to.eql(expectedDate)
-        })
-        .expect(res =>
-          db
-            .from('images')
-            .select('*')
-            .where({ id: res.body.id })
-            .first()
-            .then(row => {
-              expect(row.id).to.eql(newImage.id)
-              expect(row.src).to.eql(newImage.src)
-              expect(row.place_id).to.eql(newImage.place_id)
-              expect(row.title).to.eql(newImage.title)
-              expect(row.user_id).to.eql(testUser.id)
-              const expectedDate = new Date().toLocaleString('en', { timeZone: 'UTC' })
-              const actualDate = new Date(row.date_created).toLocaleString()
-              expect(actualDate).to.eql(expectedDate)
-            })
-        )
     })
 
-    const requiredFields = ['id', 'src', 'place_id']
-
-    requiredFields.forEach(field => {
-      const testPlace = testPlaces[0]
+    it(`responds with 400 and an error message when required fields are missing`, () => {
       const testUser = testUsers[0]
-      const newImages = [
-        {
-          "id": "12345",
-          "src": "http test 1",
-          "title": "test title 1",
-          "place_id": testPlace.id
-        },
-        {
-          "id": "23456",
-          "src": "http test 2",
-          "title": "test title 2",
-          "place_id": testPlace.id
-        },
+      const newImages = [ 
+        { "title": "test title 1" } 
       ]
-      const newImage = newImages[0]
-
-      it(`responds with 400 and an error message when the '${field}' is missing`, () => {
-        delete newImage[field]
-
-        return supertest(app)
-          .post('/api/images')
-          .set('Authorization', helpers.makeAuthHeader(testUser))
-          .send(newImages)
-          .expect(400, {
-            error: `Missing '${field}' in request body`,
-          })
-      })
+      const errorMsg = 'Missing id,src,place_id in request body'
+      return supertest(app)
+        .post('/api/images')
+        .set('Authorization', helpers.makeAuthHeader(testUser))
+        .send(newImages)
+        .expect(500)
+        .expect(res => {
+          expect(res.body.error).to.eql(errorMsg)
+        })
     })
   })
 
