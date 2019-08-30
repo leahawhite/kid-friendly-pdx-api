@@ -4,7 +4,6 @@ const morgan = require ('morgan')
 const cors = require('cors')
 const { CLIENT_ORIGIN, NODE_ENV } = require('./config')
 const helmet = require('helmet')
-const config = require('./config')
 
 const placesRouter = require('./places/places-router')
 const usersRouter = require('./users/users-router')
@@ -19,7 +18,7 @@ const morganOption = (NODE_ENV === 'production')
   : 'common';
 
 app.use(morgan(morganOption))
-app.use(cors())
+app.use(cors(CLIENT_ORIGIN))
 app.use(helmet())
 
 app.use('/api/places', placesRouter)
