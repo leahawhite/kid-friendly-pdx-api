@@ -42,7 +42,7 @@ INSERT INTO place_category
 VALUES
   (6, 4),
   (7, 5),
-  (7, 6),
+  (7, 6);
 
 INSERT INTO descriptors
   (descriptor)
@@ -65,7 +65,7 @@ VALUES
   16('picnic area'),
   17('flight simulator'),
   18('tours'),
-  19('activities')
+  19('STEM activities')
 
 
 INSERT INTO place_descriptors
@@ -76,25 +76,27 @@ VALUES
   (6, 15),
   (7, 17),
   (7, 18),
-  (7, 19),
+  (7, 19);
 
 INSERT INTO users
   (id, display_name, email, password, date_created)
 VALUES
-  (1, 'Administrator', 'administrator@xxx.com', '$2a$12$kkYIIV5RRTc1VnejrNYPjOtTOAixdpmHiS0AYOzmi13G3P6ko99Ei', '2019-07-06'),
-  (2, 'Leah', 'leahawhite@gmail.com', '$2a$12$kkYIIV5RRTc1VnejrNYPjOtTOAixdpmHiS0AYOzmi13G3P6ko99Ei', '2019-07-06'),
-  (3, 'Charlie', 'charlie@alwayssunny.com', '$2a$12$GSep0WnpEFTOdtkr74chKOKhHgd8Q5xCMed4QxEfYmED5MEpprGsi', '2019-06-13');
+  (4, 'Demo', 'demo@demo.com', '$2a$12$NM7zDbI8ZcLxLZsf0VwQzedbI38CTjBmsaxaK4pII8ysG6YoAi.1q', '2019-08-29');
 
 INSERT INTO reviews
   (rating, text, date_created, place_id, user_id)
 VALUES
   (3, 'Lents Park has a lot going for it -- a dog park, community garden, unique playground, plenty of sports fields, a running track, and even the Portland Pickles baseball games. But when I visited recently with my 3-year-old, it was in pretty shabby shape. We came on a Monday morning, so it''s possible we just saw the aftermath of a busy summer weekend, but there was trash everywhere, including the playground, and the whole park just had a kind of derelict vibe. It was a shame, since I''ve had plenty of good experiences here in the past.', '2019-08-24', 6, 2),
-  (5, 'We loved this small museum in Vancouver. Most vehicle-based museums don''t actually let you near most of the machines, but this one lets you explore the interior of quite a few different historic planes. They pack a lot into a small room! There are also quite a few different STEM activities to do and plenty of friendly volunteers to guide kids through them. Great vibe here. We''ll come back.', '2019-08-24', 7, 2),
+  (5, 'We loved this small museum in Vancouver. Most vehicle-based museums don''t actually let you near most of the machines, but this one lets you explore the interior of quite a few different historic planes. They pack a lot into a small room! There are also quite a few different STEM activities to do and plenty of friendly volunteers to guide kids through them. Great vibe here. We''ll come back.', '2019-08-24', 7, 2);
 
   
 INSERT INTO images
   (id, src, title, place_id, user_id, date_created)
 VALUES
-  (21, '', ),
-
+  (21, 'https://res.cloudinary.com/kid-friendly-pdx/image/upload/v1566710012/kid-friendly/lents_playground_plz5xq.jpg', 'Lents playground spinner', 6, 1, '2019-08-29'),
+  (22, 'https://res.cloudinary.com/kid-friendly-pdx/image/upload/v1566710012/kid-friendly/lents_play_sbvngh.jpg', 'Lents Park playground', 6, 1, '2019-08-29'),
+  (23, 'https://res.cloudinary.com/kid-friendly-pdx/image/upload/v1566710012/kid-friendly/lents_fields_mdxxat.jpg', 'Lents Park new soccer field', 6, 1, '2019-08-29'),
+  (24, 'https://res.cloudinary.com/kid-friendly-pdx/image/upload/v1566712587/kid-friendly/Pearson-Air-Museum_fcc6yn.jpg', 'Pearson Air Museum exterior', 7, 1, '2019-08-29'),
+  (25, 'https://res.cloudinary.com/kid-friendly-pdx/image/upload/v1566712587/kid-friendly/pearson_interior_oh7aab.jpg', 'museum interior', 6, 1, '2019-08-29'),
+  (26, 'https://res.cloudinary.com/kid-friendly-pdx/image/upload/v1566712597/kid-friendly/planes_outside_pearson_mhadke.jpg', 'planes to explore outside', 6, 1, '2019-08-29');
 COMMIT;
