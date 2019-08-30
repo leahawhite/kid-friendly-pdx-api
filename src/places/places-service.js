@@ -58,10 +58,10 @@ const PlacesService = {
         query.orWhere('d.descriptor', 'ilike', `%${searchTerm}%`)
       }
       if (category) {
-        query.where('c.category_name', 'ilike', `${category}`)
+        query.where('c.category_name',`${category}`)
       }
       if (neighborhood) {
-        query.where('pl.neighborhood', 'ilike', `${neighborhood}`)
+        query.where('pl.neighborhood',`${neighborhood}`)
       }
     })
     .leftJoin('place_hours', 'place_hours.place_id', 'pl.id')

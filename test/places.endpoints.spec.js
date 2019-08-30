@@ -58,7 +58,6 @@ describe('Places Endpoints', () => {
         )
       })
       
-      // need to do a test with no query params and one with, .query({ searchTerm: 'pizza', category: 'restaurant', neighborhood: 'SE' })
       it(`responds with 200 and all of the places`, () => {
         const expectedPlaces = testPlaces.map(place =>
           helpers.makeExpectedPlace(
