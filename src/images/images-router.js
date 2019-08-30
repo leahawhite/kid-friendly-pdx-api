@@ -34,14 +34,6 @@ const hasInvalidFields = (requiredFields) => {
 
 imagesRouter
   .route('/')
-  .get((req, res, next) => {
-    const knexInstance = req.app.get('db')
-    ImagesService.getAllImages(knexInstance)
-      .then(images => {
-        res.json(images.map(ImagesService.serializeImage))
-      })
-      .catch(next)
-  })
   .post(requireAuth, jsonBodyParser, (req, res, next) => {
     const userId = req.user.id
 
@@ -66,12 +58,6 @@ imagesRouter
       .catch(next)
   })
   
-imagesRouter
-  .route('/:image_id')
-  .get(checkImageExists, (req, res, next) => {
-    res.json(ImagesService.serializeImage(res.image))
-  })
-
 imagesRouter
   .route('/upload')
   .post((req, res) => {
