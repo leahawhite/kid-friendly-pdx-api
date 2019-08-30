@@ -1,29 +1,46 @@
-# Express Boilerplate!
+# Kid-Friendly PDX API
 
-This is a boilerplate project used for starting new projects!
+[Kid-Friendly PDX](https://github.com/leahawhite/kid-friendly-pdx) is a review and rating app that focuses on the kid-friendliness of places in Portland, Oregon. This is the API that serves and stores all data for the app.
 
-## Set up
+## Server is hosted on Heroku:
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+[https://tranquil-caverns-98511.herokuapp.com/](https://tranquil-caverns-98511.herokuapp.com/)
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name": "express-boilerplate",`
+## API Endpoints
+Users
+- POST '/api/users' creates a new user
 
-## Scripts
+Auth
+- POST '/api/login' matches given credentials and provides a JWT token
 
-Start the application `npm start`
+Places
+- GET '/api/places' gets all places in the database
+  - Query parameters
+    - searchTerm: searches places by place names, category, and descriptors based on user keyword
+    - category: filters places by predefined category keyword
+    - neighborhood: filters places by predefined neighborhood keyword
+- GET '/api/places/:place_id' gets a place by ID
+- GET '/api/places/:place_id/reviews' gets all reviews for a place, including review images
 
-Start nodemon for the application `npm run dev`
+Reviews
+- POST '/api/reviews' creates a new review
 
-Run the tests `npm test`
+Images
+- POST '/api/images/upload' uploads images to a Cloudinary server for transformation
+- POST '/api/images' posts a new image to the database
 
-Seed the db: 
-psql -U postgres -d kid_friendly_pdx -f ./seeds/seed.places.sql (etc)
+## Technology Used
+- Node.js
+- Express
+- PostgreSQL
+- Knex.js
+- Mocha
+- Chai
+- Supertest
 
-## Deploying
+## Security
+This application uses JWT authentication.
 
-When your new project is ready for deployment, add a new Heroku application with `heroku create`. This will make a new git remote called "heroku" and you can then `npm run deploy` which will push to this remote's master branch. 
+
+
+

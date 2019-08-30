@@ -51,6 +51,13 @@ const PlacesService = {
         `AVG(reviews.rating) AS average_review_rating`
       )
     )
+    .leftJoin('place_hours', 'place_hours.place_id', 'pl.id')
+    .leftJoin('images', 'images.place_id', 'pl.id')  
+    .leftJoin('reviews', 'reviews.place_id', 'pl.id')
+    .leftJoin('place_category as pc', 'pc.place_id', 'pl.id')
+    .leftJoin('category as c', 'c.id', 'pc.category_id')
+    .leftJoin('place_descriptors as pd', 'pd.place_id', 'pl.id')
+    .leftJoin('descriptors as d', 'd.id', 'pd.descriptor_id')
     .where(query => {
       if (searchTerm) {
         query.where('pl.name', 'ILIKE', `%${searchTerm}%`)
@@ -64,13 +71,6 @@ const PlacesService = {
         query.where('pl.neighborhood',`${neighborhood}`)
       }
     })
-    .leftJoin('place_hours', 'place_hours.place_id', 'pl.id')
-    .leftJoin('images', 'images.place_id', 'pl.id')  
-    .leftJoin('reviews', 'reviews.place_id', 'pl.id')
-    .leftJoin('place_category as pc', 'pc.place_id', 'pl.id')
-    .leftJoin('category as c', 'c.id', 'pc.category_id')
-    .leftJoin('place_descriptors as pd', 'pd.place_id', 'pl.id')
-    .leftJoin('descriptors as d', 'd.id', 'pd.descriptor_id')
     .groupBy('pl.id')
     .orderBy('pl.id')
   },
