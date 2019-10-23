@@ -10,7 +10,6 @@ const usersRouter = require('./users/users-router')
 const authRouter = require('./auth/auth-router')
 const reviewsRouter = require('./reviews/reviews-router')
 const imagesRouter = require('./images/images-router')
-
 const app = express()
 
 const morganOption = (NODE_ENV === 'production')
@@ -20,7 +19,6 @@ const morganOption = (NODE_ENV === 'production')
 app.use(morgan(morganOption))
 app.use(cors(CLIENT_ORIGIN))
 app.use(helmet())
-
 app.use('/api/places', placesRouter)
 app.use('/api/reviews', reviewsRouter)
 app.use('/api/users', usersRouter)
