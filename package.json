@@ -28,7 +28,7 @@
     "express-form-data": "^2.0.10",
     "helmet": "^3.21.2",
     "jsonwebtoken": "^8.5.1",
-    "knex": "^0.19.5",
+    "knex": "^2.4.0",
     "knexnest": "^1.0.0",
     "moment": "^2.24.0",
     "morgan": "^1.9.1",
